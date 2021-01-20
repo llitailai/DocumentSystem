@@ -12,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @discription
  */
 @EnableScheduling
-@MapperScan("com.nxftl.doc.*.*.mapper")
+@MapperScan("com.nxftl.doc.*.mapper")
 @org.springframework.boot.autoconfigure.SpringBootApplication(exclude = {org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration.class})
 @EnableSwagger2
 public class SpringBootApplication {
