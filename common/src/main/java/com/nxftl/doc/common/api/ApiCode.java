@@ -1,6 +1,8 @@
 package com.nxftl.doc.common.api;
 
 
+import com.nxftl.doc.common.http.HttpStatus;
+
 /**
  * @author darkltl
  * @email darkltl@163.com
@@ -9,7 +11,8 @@ package com.nxftl.doc.common.api;
  */
 public enum ApiCode {
 
-    SUCCESS(200,"响应正常");
+    SUCCESS(HttpStatus.SUCCESS,"操作成功"),
+    ERROR(HttpStatus.ERROR,"操作失败");
 
 
     private Integer resultCode;

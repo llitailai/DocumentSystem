@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: dev
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+  mail:
+    host: smtp.qq.com
+    username: 2171252209@qq.com
+    password: iriitfnrdyimebee
+    properties:
+      mail:
+        smtp:
+          auth: true
+          star
+

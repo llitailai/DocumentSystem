@@ -11,7 +11,7 @@ public class ApiResult<T>{
     /**
      * 返回状态码
      */
-    private String resultCode;
+    private Integer resultCode;
 
     /**
      * 返回状态信息
@@ -23,14 +23,18 @@ public class ApiResult<T>{
      */
     private T data;
 
-    public ApiResult(String resultCode,String resultMsg){
+    public ApiResult(ApiCode apiCode){
+        this.resultCode = apiCode.getResultCode();
+        this.resultMsg = apiCode.getResultMsg();
+    }
+
+    public ApiResult(Integer resultCode,String resultMsg){
         this.resultCode = resultCode;
         this.resultMsg = resultMsg;
     }
-
-    public ApiResult(String resultCode,String resultMsg,T data){
-        this.resultCode = resultCode;
-        this.resultMsg = resultMsg;
+    public ApiResult(ApiCode apiCode,T data){
+        this.resultCode = apiCode.getResultCode();
+        this.resultMsg = apiCode.getResultMsg();
         this.data = data;
     }
 
@@ -38,29 +42,43 @@ public class ApiResult<T>{
 
     }
 
-    public ApiResult<T> success(String resultCode, String resultMsg, T data){
+    public ApiResult<T> success(Integer resultCode, String resultMsg, T data){
         this.resultCode = resultCode;
         this.resultMsg = resultMsg;
         this.data = data;
         return this;
     }
 
-    public ApiResult success(String resultCode,String resultMsg){
-        this.resultCode = resultCode;
-        this.resultMsg = resultMsg;
+    public ApiResult success(ApiCode apiCode){
+        this.resultCode = apiCode.getResultCode();
+        this.resultMsg = apiCode.getResultMsg();
         return this;
     }
 
 
-    public ApiResult fail(String resultCode,String resultMsg){
-        this.resultCode = resultCode;
-        this.resultMsg = resultMsg;
+    public ApiResult success(){
+        this.resultCode = ApiCode.SUCCESS.getResultCode();
+        this.resultMsg = ApiCode.SUCCESS.getResultMsg();
         return this;
     }
 
-    public ApiResult<T> fail(String resultCode,String resultMsg,T data){
+
+    public ApiResult fail(ApiCode apiCode){
+        this.resultCode = apiCode.getResultCode();
+        this.resultMsg = apiCode.getResultMsg();
+        return this;
+    }
+
+    public ApiResult<T> fail(Integer resultCode,String resultMsg,T data){
         this.resultCode = resultCode;
         this.resultMsg = resultMsg;
+        this.data = data;
+        return this;
+    }
+
+    public ApiResult fail(){
+        this.resultCode = ApiCode.ERROR.getResultCode();
+        this.resultMsg = ApiCode.ERROR.getResultMsg();
         return this;
     }
 

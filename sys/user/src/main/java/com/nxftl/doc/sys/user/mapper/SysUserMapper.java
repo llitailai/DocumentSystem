@@ -2,6 +2,7 @@ package com.nxftl.doc.sys.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.nxftl.doc.sys.user.entity.SysUser;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.nxftl.doc.sys.user.entity.SysUser;
  * @author darkltl
  * @since 2021-01-20
  */
+@Repository
 public interface SysUserMapper extends BaseMapper<SysUser> {
 
 }

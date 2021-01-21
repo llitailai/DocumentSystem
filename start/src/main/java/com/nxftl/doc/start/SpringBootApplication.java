@@ -1,7 +1,9 @@
-package com.nxftl.doc.common;
+package com.nxftl.doc.start;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -12,11 +14,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @discription
  */
 @EnableScheduling
-@MapperScan("com.nxftl.doc.*.mapper")
-@org.springframework.boot.autoconfigure.SpringBootApplication(exclude = {org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration.class})
+@org.springframework.boot.autoconfigure.SpringBootApplication(
+        exclude = {SecurityAutoConfiguration.class})
 @EnableSwagger2
+@ComponentScan(basePackages = {"com.nxftl","com.nxftl.doc.sys.*"})
+@MapperScan("com.nxftl.doc.*.*.mapper")
 public class SpringBootApplication {
-    public static void main(String[] args) {
+    public static void main(String[] args){
         SpringApplication.run(SpringBootApplication.class, args);
     }
 }

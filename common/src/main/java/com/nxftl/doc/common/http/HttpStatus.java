@@ -4,7 +4,7 @@ package com.nxftl.doc.common.http;
  * @author darkltl
  * @email darkltl@163.com
  * @date 2021/1/20 17:50
- * @discription Http相应状态码
+ * @discription Http响应状态码
  */
 public interface HttpStatus {
     /**

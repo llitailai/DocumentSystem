@@ -51,6 +51,8 @@ spring:
   servlet:
     multipart:
       max-file-size: 100MB
+  application:
+    name: doc
 
 # ====================MybatisPlus====================
 mybatis-plus:
@@ -58,7 +60,7 @@ mybatis-plus:
   # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
   mapper-locations: classpath*:mapper/**/**.xml
   #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.nxftl.document.*.*.entity
+  typeAliasesPackage: com.nxftl.doc.*.*.entity
   global-config:
     #刷新mapper 调试神器
     db-config:
@@ -84,10 +86,11 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     database-id: mysql
 server:
-  port: 8585
+  port: 8989
   servlet:
     session:
       timeout: -1
+
 
 # jwt
 jwt:
