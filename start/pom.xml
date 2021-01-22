@@ -15,20 +15,9 @@
     <dependencies>
         <dependency>
             <groupId>com.nxftl</groupId>
-            <artifactId>user</artifactId>
+            <artifactId>sys</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.nxftl</groupId>
-            <artifactId>log</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.nxftl</groupId>
-            <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

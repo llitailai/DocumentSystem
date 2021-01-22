@@ -98,3 +98,4 @@ jwt:
   expiration: 7200000
   token: Authorization
 
+
