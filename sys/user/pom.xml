@@ -12,4 +12,11 @@
     <artifactId>user</artifactId>
 
 
+    <dependencies>
+        <dependency>
+            <groupId>com.nxftl</groupId>
+            <artifactId>log</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
