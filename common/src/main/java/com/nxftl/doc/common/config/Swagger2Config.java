@@ -44,6 +44,8 @@ public class Swagger2Config {
                 .apis(RequestHandlerSelectors.basePackage("com.nxftl.doc.sys.user"))
                 .paths(PathSelectors.any())
                 .build();
+
+
     }
 
     @Bean("logDocApi")

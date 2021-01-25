@@ -22,12 +22,16 @@ import javax.annotation.Resource;
 @RequestMapping("/user/sysUser")
 public class SysUserController {
 
+
     @Resource
     ISysUserService userService;
 
     @PostMapping("/register")
-    public ApiResult register(@ApiParam("注册用户") SysUser user) throws Exception {
+    public ApiResult register(@ApiParam("注册用户实体对象") SysUser user) throws Exception {
         return userService.registerService(user);
     }
+
+
+
 
 }

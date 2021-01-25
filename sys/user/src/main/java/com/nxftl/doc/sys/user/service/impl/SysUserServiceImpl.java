@@ -10,6 +10,10 @@ import com.nxftl.doc.sys.user.service.ISysUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.beans.BeanProperty;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * <p>
@@ -25,9 +29,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Resource
     SysUserMapper userMapper;
 
+
     @Override
     public ApiResult registerService(SysUser user) throws Exception {
         VerifyParam.verifyParam(user.getClass());
         return userMapper.insert(user)>0?new ApiResult(ApiCode.INSERT_SUCCESS):new ApiResult(ApiCode.INSERT_ERROR);
     }
+
+
 }
