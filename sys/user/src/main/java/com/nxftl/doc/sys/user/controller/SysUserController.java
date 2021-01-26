@@ -30,8 +30,6 @@ public class SysUserController {
     public ApiResult register(@ApiParam("注册用户实体对象") SysUser user) throws Exception {
         return userService.registerService(user);
     }
-
-
-
-
+    
 }
+

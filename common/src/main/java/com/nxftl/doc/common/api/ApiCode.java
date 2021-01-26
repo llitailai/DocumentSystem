@@ -12,9 +12,10 @@ import com.nxftl.doc.common.http.HttpStatus;
 public enum ApiCode {
 
     SUCCESS(HttpStatus.SUCCESS,"操作成功"),
-    ERROR(HttpStatus.ERROR,"操作失败"),
+    ERROR(HttpStatus.ACCEPTED,"操作失败"),
+    NOT_USER(HttpStatus.ACCEPTED,"没有该用户"),
     INSERT_SUCCESS(HttpStatus.SUCCESS,"插入成功"),
-    INSERT_ERROR(HttpStatus.ERROR,"插入失败");
+    INSERT_ERROR(HttpStatus.ACCEPTED,"插入失败");
 
     private Integer resultCode;
 

@@ -3,17 +3,14 @@ package com.nxftl.doc.sys.user.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nxftl.doc.common.api.ApiCode;
 import com.nxftl.doc.common.api.ApiResult;
+import com.nxftl.doc.common.util.BaseException;
+import com.nxftl.doc.common.util.StringUtils;
 import com.nxftl.doc.common.util.VerifyParam;
 import com.nxftl.doc.sys.user.entity.SysUser;
 import com.nxftl.doc.sys.user.mapper.SysUserMapper;
 import com.nxftl.doc.sys.user.service.ISysUserService;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
-import java.beans.BeanProperty;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * <p>
@@ -34,6 +31,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public ApiResult registerService(SysUser user) throws Exception {
         VerifyParam.verifyParam(user.getClass());
         return userMapper.insert(user)>0?new ApiResult(ApiCode.INSERT_SUCCESS):new ApiResult(ApiCode.INSERT_ERROR);
+    }
+
+    @Override
+    public String getPasswordById(Integer userId) {
+        String password = userMapper.getPasswordByUserIdSql(userId);
+        if(StringUtils.isEmpty(password)){
+            throw new BaseException(ApiCode.NOT_USER);
+        }
+        return password;
     }
 
 

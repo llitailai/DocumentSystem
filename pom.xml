@@ -8,6 +8,8 @@
         <module>show</module>
         <module>common</module>
         <module>start</module>
+        <module>util</module>
+        <module>config</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

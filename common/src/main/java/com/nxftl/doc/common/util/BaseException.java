@@ -1,5 +1,7 @@
 package com.nxftl.doc.common.util;
 
+import com.nxftl.doc.common.api.ApiCode;
+
 /**
  * @author darkltl
  * @email darkltl@163.com
@@ -19,6 +21,10 @@ public class BaseException extends RuntimeException{
         super(message);
     }
 
+    public BaseException(ApiCode code){
+        this.errorCode = code.getResultCode();
+        this.errorMsg = code.getResultMsg();
+    }
     public BaseException(Integer errorCode,String errorMsg){
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;

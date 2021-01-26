@@ -62,11 +62,20 @@ public class ApiResult<T> implements Serializable {
     }
 
 
+    public ApiResult success(ApiCode apiCode,T data){
+        this.code = apiCode.getResultCode();
+        this.msg = apiCode.getResultMsg();
+        this.data = data;
+        return this;
+    }
+
+
     public ApiResult success(){
         this.code = ApiCode.SUCCESS.getResultCode();
         this.msg = ApiCode.SUCCESS.getResultMsg();
         return this;
     }
+
 
 
     public ApiResult fail(ApiCode apiCode){
