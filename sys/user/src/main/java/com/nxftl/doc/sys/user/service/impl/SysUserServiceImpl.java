@@ -35,6 +35,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public ApiResult loginService(String userAccount, String password) throws Exception {
+        userMapper.getPasswordByUserAccountSql(userAccount);
         return null;
     }
 
@@ -46,7 +47,5 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         return password;
     }
-
-
 
 }

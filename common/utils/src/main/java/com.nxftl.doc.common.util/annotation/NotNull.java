@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * @date 2021/1/22 11:49
  * @discription 不允许为null 标注该注解即可
  */
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD,ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface NotNull {
