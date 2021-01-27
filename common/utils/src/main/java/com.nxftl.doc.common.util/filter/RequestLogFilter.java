@@ -42,6 +42,7 @@ public class RequestLogFilter implements Filter{
         ThreadContext.put("ParamNames", CollectionUtils.isEmpty(paramNames) ? "{}" : JSON.toJSONString(paramNames));
 
         //TODO 需要时打开注释
+        // 记录升级至2020.3 Idea版本出现的问题 lombok失效 解决方式 settings compiler选项 Vm options 添加-Djps.track.ap.dependencies=false
          log.info("URL: " + request.getRequestURL().toString());
          log.info("Http Method: " + request.getMethod());
          log.info("IP Addr: " + request.getRemoteAddr());
