@@ -1,11 +1,11 @@
 package com.nxftl.doc.sys.user.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.nxftl.doc.common.api.ApiCode;
-import com.nxftl.doc.common.api.ApiResult;
-import com.nxftl.doc.common.util.BaseException;
-import com.nxftl.doc.common.util.StringUtils;
-import com.nxftl.doc.common.util.VerifyParam;
+import com.nxftl.doc.common.util.api.ApiCode;
+import com.nxftl.doc.common.util.api.ApiResult;
+import com.nxftl.doc.common.util.util.BaseException;
+import com.nxftl.doc.common.util.util.StringUtils;
+import com.nxftl.doc.common.util.util.VerifyParam;
 import com.nxftl.doc.sys.user.entity.SysUser;
 import com.nxftl.doc.sys.user.mapper.SysUserMapper;
 import com.nxftl.doc.sys.user.service.ISysUserService;
@@ -34,6 +34,11 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
+    public ApiResult loginService(String userAccount, String password) throws Exception {
+        return null;
+    }
+
+    @Override
     public String getPasswordById(Integer userId) {
         String password = userMapper.getPasswordByUserIdSql(userId);
         if(StringUtils.isEmpty(password)){
@@ -41,6 +46,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         return password;
     }
+
 
 
 }

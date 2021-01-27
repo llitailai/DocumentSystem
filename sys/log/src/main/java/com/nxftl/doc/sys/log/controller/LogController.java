@@ -1,7 +1,7 @@
 package com.nxftl.doc.sys.log.controller;
 
-import com.nxftl.doc.common.api.ApiCode;
-import com.nxftl.doc.common.api.ApiResult;
+import com.nxftl.doc.common.util.api.ApiCode;
+import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.sys.log.entity.LogEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,8 +1,12 @@
 package com.nxftl.doc.sys.user.controller;
 
-import com.nxftl.doc.common.api.ApiResult;
+import com.nxftl.doc.common.util.annotation.RequiredToken;
+import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.sys.user.entity.SysUser;
 import com.nxftl.doc.sys.user.service.ISysUserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +31,24 @@ public class SysUserController {
     ISysUserService userService;
 
     @PostMapping("/register")
-    public ApiResult register(@ApiParam("注册用户实体对象") SysUser user) throws Exception {
-        return userService.registerService(user);
+    @ApiOperation("注册后台用户")
+    @RequiredToken
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userAccount",value = "用户账号",dataType = "String"),
+            @ApiImplicitParam(name = "userPass",value = "用户账号",dataType = "String")
+    })
+    public ApiResult register(String userAccount,String userPass) throws Exception {
+        return userService.registerService(new SysUser().setAccount(userAccount).setPassword(userPass));
+    }
+
+    @ApiOperation("后台用户登录")
+    @PostMapping("/login")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "userAccount",value = "用户账号",dataType = "String"),
+        @ApiImplicitParam(name = "userPass",value = "用户账号",dataType = "String")
+    })
+    public ApiResult login(String userAccount,String userPass){
+        return new ApiResult().success();
     }
     
 }

@@ -1,7 +1,7 @@
 package com.nxftl.doc.sys.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.nxftl.doc.common.api.ApiResult;
+import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.sys.user.entity.SysUser;
 
 import java.util.HashMap;
@@ -18,6 +18,8 @@ public interface ISysUserService extends IService<SysUser> {
 
 
     ApiResult registerService(SysUser user) throws Exception;
+
+    ApiResult loginService(String userAccount,String password) throws Exception;
 
 
     String getPasswordById(Integer userId);

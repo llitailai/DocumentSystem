@@ -10,6 +10,7 @@
         <module>start</module>
         <module>util</module>
         <module>config</module>
+        <module>start</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

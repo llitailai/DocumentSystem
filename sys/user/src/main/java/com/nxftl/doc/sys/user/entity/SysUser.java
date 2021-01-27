@@ -2,13 +2,14 @@ package com.nxftl.doc.sys.user.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.nxftl.doc.common.annotation.NotNull;
+import com.nxftl.doc.common.util.annotation.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -23,6 +24,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel("后台用户")
+@Accessors(chain = true)
 public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
