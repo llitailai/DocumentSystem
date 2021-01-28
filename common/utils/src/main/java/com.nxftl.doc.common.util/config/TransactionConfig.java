@@ -13,6 +13,8 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
+import javax.annotation.Resource;
+
 /**
  * @author darkltl
  * @date 2020/12/30 9:42
@@ -47,7 +49,7 @@ public class TransactionConfig {
     private static final int TX_METHOD_TIMEOUT= 5 ;
 
 
-    @Autowired
+    @Resource
     private PlatformTransactionManager platformTransactionManager;
 
     /**

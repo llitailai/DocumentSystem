@@ -33,7 +33,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
      * @return
      */
     @Select("SELECT password FROM sys_user WHERE user_id = #{userId} limit 1")
-    String getPasswordByUserIdSql(@Param("userId") Integer userId);
+    String getPasswordByUserIdSql(@Param("userId") Long userId);
 }
 
 

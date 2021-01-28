@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nxftl.doc.common.util.annotation.NotNull;
 import com.nxftl.doc.common.util.api.ApiCode;
 import com.nxftl.doc.common.util.api.ApiResult;
+import com.nxftl.doc.common.util.http.HttpStatus;
 import com.nxftl.doc.common.util.util.*;
 import com.nxftl.doc.config.setting.Config;
 import com.nxftl.doc.sys.user.entity.SysUser;
@@ -42,7 +43,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public String getPasswordById(Integer userId) {
+    public String getPasswordById(Long userId) {
         String password = userMapper.getPasswordByUserIdSql(userId);
         if(StringUtils.isEmpty(password)){
             throw new BaseException(ApiCode.NOT_USER);
@@ -59,7 +60,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 .eq(SysUser::getAccount, userAccount));
 
         if(curUser == null || curUser.getDelFlag() || curUser.getUserStatus()  ){
-            throw new BaseException(Config.ACCOUNT_OR_PASSWORD_FAIL);
+            throw new BaseException(HttpStatus.ACCEPTED,Config.ACCOUNT_OR_PASSWORD_FAIL);
         }
 
         return generateToken(userPass,curUser.getPassword(),curUser.getUserId());

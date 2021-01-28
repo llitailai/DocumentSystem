@@ -22,5 +22,5 @@ public interface ISysUserService extends IService<SysUser> {
     ApiResult loginService(String userAccount,String password) throws Exception;
 
 
-    String getPasswordById(Integer userId);
+    String getPasswordById(Long userId);
 }

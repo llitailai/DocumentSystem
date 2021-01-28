@@ -53,8 +53,8 @@ public class Token {
      * @param decodedJWT
      * @return
      */
-    public static Integer getUserId(DecodedJWT decodedJWT){
-        return decodedJWT.getClaim(Config.USER_ID).asInt();
+    public static Long getUserId(DecodedJWT decodedJWT){
+        return decodedJWT.getClaim(Config.USER_ID).asLong();
     }
 
 

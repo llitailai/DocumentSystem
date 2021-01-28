@@ -35,7 +35,7 @@ public class SysUserController {
     @RequiredToken
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userAccount",value = "用户账号",dataType = "String"),
-            @ApiImplicitParam(name = "userPass",value = "用户账号",dataType = "String")
+            @ApiImplicitParam(name = "userPass",value = "用户密码",dataType = "String")
     })
     public ApiResult register(String userAccount,String userPass) throws Exception {
         return userService.registerService(new SysUser().setAccount(userAccount).setPassword(userPass));
@@ -45,10 +45,10 @@ public class SysUserController {
     @PostMapping("/login")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "userAccount",value = "用户账号",dataType = "String"),
-        @ApiImplicitParam(name = "userPass",value = "用户账号",dataType = "String")
+        @ApiImplicitParam(name = "userPass",value = "用户密码",dataType = "String")
     })
-    public ApiResult login(String userAccount,String userPass){
-        return new ApiResult().success();
+    public ApiResult login(String userAccount,String userPass) throws Exception {
+        return userService.loginService(userAccount,userPass);
     }
     
 }
