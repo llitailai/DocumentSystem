@@ -37,7 +37,18 @@ public class VerifyParam {
         }
     }
 
+    public static void verifyParam(Object ... obj) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        for (Object o : obj) {
+            verifyString(o);
+            verifyParam(obj.getClass());
+        }
+    }
 
+
+    private static void verifyString(Object obj){
+        if(StringUtils.isEmpty(obj))
+            throw new BaseException(obj.getClass().getAnnotation(NotNull.class).value());
+    }
     private static String getMethodName(String filedName){
         String first = filedName.substring(0, 1);
         return filedName.replaceFirst(first,first.toUpperCase());

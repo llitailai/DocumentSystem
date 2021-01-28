@@ -1,10 +1,9 @@
-package com.nxftl.doc.common.auth.utils;
+package com.nxftl.doc.common.util.util;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.nxftl.doc.config.setting.Config;
-import com.nxftl.doc.sys.user.entity.SysUser;
 import org.springframework.util.DigestUtils;
 
 import java.util.Calendar;
@@ -24,7 +23,7 @@ public class Token {
      * @param user
      * @return
      */
-    public static String createToken(Integer userId,String password){
+    public static String createToken(Long userId,String password){
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE,Config.TIME_OUT_DAY);
         String token = JWT.create()

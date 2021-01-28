@@ -26,4 +26,12 @@ public interface Config {
     String USER_ID = "user_id";
 
     String KEY = "key";
+
+    String ACCOUNT_NOT_NULL = "账号不许为空";
+
+    String PASSWORD_NOT_NULL = "密码不许为空";
+
+    String ACCOUNT_NOT_FOUND = "账号不存在";
+
+    String ACCOUNT_OR_PASSWORD_FAIL = "账号或密码错误";
 }
