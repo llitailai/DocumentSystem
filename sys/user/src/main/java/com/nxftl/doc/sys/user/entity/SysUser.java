@@ -1,6 +1,8 @@
 package com.nxftl.doc.sys.user.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.nxftl.doc.common.util.annotation.NotNull;
 import io.swagger.annotations.ApiModel;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
@@ -40,13 +43,13 @@ public class SysUser implements Serializable {
      * 账号
      */
     @NotNull(value = "用户账号不许为空")
-    @ApiModelProperty(value = "用户账号",required = true)
+    @ApiModelProperty(value = "用户账号")
     private String account;
 
     /**
      * 密码
      */
-    @ApiModelProperty(value = "用户密码",required = true)
+    @ApiModelProperty(value = "用户密码")
     @NotNull(value = "用户密码不许为空")
     private String password;
 
@@ -62,5 +65,11 @@ public class SysUser implements Serializable {
     @ApiModelProperty(value = "用户状态")
     private Boolean userStatus;
 
+    @ApiModelProperty(value = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
 
+    @ApiModelProperty(value = "修改时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
 }

@@ -59,6 +59,16 @@ public class Swagger2Config {
                 .build();
     }
 
+    @Bean("DictDocApi")
+    public Docket createDictDoc() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .groupName("DictDocApi")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.nxftl.doc.sys.dict"))
+                .paths(PathSelectors.any())
+                .build();
+    }
 
 
 

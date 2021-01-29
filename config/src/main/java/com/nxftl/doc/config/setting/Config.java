@@ -31,7 +31,9 @@ public interface Config {
 
     String PASSWORD_NOT_NULL = "密码不许为空";
 
-    String ACCOUNT_NOT_FOUND = "账号不存在";
-
     String ACCOUNT_OR_PASSWORD_FAIL = "账号或密码错误";
+
+    String HAVE_NULL_PARAM = "您有未填写的信息";
+
+    String GET = "get";
 }

@@ -35,6 +35,7 @@ public class DocExceptionHandler {
     public ApiResult baseExceptionHandler(BaseException e){
         e.printStackTrace();
         log.warn(e.getMessage());
+        e.printStackTrace();
         return new ApiResult(e.getErrorCode(),e.getErrorMsg());
     }
 
@@ -42,6 +43,8 @@ public class DocExceptionHandler {
     @ResponseBody
     public ApiResult runTimeExceptionHandler(RuntimeException e){
         log.warn(e.getMessage());
+        e.printStackTrace();
+        System.out.println(e.getClass().getName());
         return new ApiResult(ApiCode.ERROR);
     }
 }

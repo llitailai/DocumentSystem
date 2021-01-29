@@ -1,13 +1,11 @@
 package com.nxftl.doc.sys.user.controller;
 
-import com.nxftl.doc.common.util.annotation.RequiredToken;
+import com.nxftl.doc.common.util.annotation.NotNull;
 import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.sys.user.entity.SysUser;
 import com.nxftl.doc.sys.user.service.ISysUserService;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
+import javafx.scene.chart.ValueAxis;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,21 +22,22 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/user/sysUser")
+@Api(value = "用户Controller",tags = {"用户操作接口"})
 public class SysUserController {
 
 
     @Resource
-    ISysUserService userService;
+    private ISysUserService userService;
 
     @PostMapping("/register")
     @ApiOperation("注册后台用户")
-    @RequiredToken
+//    @RequiredToken
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userAccount",value = "用户账号",dataType = "String"),
             @ApiImplicitParam(name = "userPass",value = "用户密码",dataType = "String")
     })
-    public ApiResult register(String userAccount,String userPass) throws Exception {
-        return userService.registerService(new SysUser().setAccount(userAccount).setPassword(userPass));
+    public ApiResult register(@NotNull(value = "用户账号不许为空") String userAccount, @NotNull(value = "用户密码不许为空") String userPass) throws Exception {
+        return userService.registerService(userAccount,userPass);
     }
 
     @ApiOperation("后台用户登录")
@@ -47,9 +46,8 @@ public class SysUserController {
         @ApiImplicitParam(name = "userAccount",value = "用户账号",dataType = "String"),
         @ApiImplicitParam(name = "userPass",value = "用户密码",dataType = "String")
     })
-    public ApiResult login(String userAccount,String userPass) throws Exception {
+    public ApiResult login(@NotNull(value = "用户账号不许为空")String userAccount,@NotNull(value = "用户密码不许为空")String userPass) throws Exception {
         return userService.loginService(userAccount,userPass);
     }
-    
 }
 

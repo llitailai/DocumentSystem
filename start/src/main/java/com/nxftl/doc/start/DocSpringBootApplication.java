@@ -1,4 +1,5 @@
 package com.nxftl.doc.start;
+import com.nxftl.doc.common.util.annotation.EnableTxManager;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -18,6 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @MapperScan(basePackages = {"com.nxftl.doc.*.*.mapper"})
 @ComponentScan(basePackages = {"com.nxftl.doc","com.nxftl.doc.sys.*","com.nxftl.doc.sys.log"})
+@EnableTxManager(pointcut = {"public * com.nxftl.doc.sys.*.service..*(..)","public * com.nxftl.doc.show.*.service..*(..)"})
 public class DocSpringBootApplication {
     public static void main(String[] args){
         SpringApplication.run(DocSpringBootApplication.class, args);

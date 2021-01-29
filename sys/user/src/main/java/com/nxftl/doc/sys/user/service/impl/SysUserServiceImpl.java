@@ -11,8 +11,10 @@ import com.nxftl.doc.config.setting.Config;
 import com.nxftl.doc.sys.user.entity.SysUser;
 import com.nxftl.doc.sys.user.mapper.SysUserMapper;
 import com.nxftl.doc.sys.user.service.ISysUserService;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 /**
@@ -27,13 +29,15 @@ import java.util.HashMap;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
     @Resource
-    SysUserMapper userMapper;
+    private SysUserMapper userMapper;
 
 
     @Override
-    public ApiResult registerService(SysUser user) throws Exception {
-        VerifyParam.verifyParam(user.getClass());
-        return userMapper.insert(user)>0?new ApiResult(ApiCode.INSERT_SUCCESS):new ApiResult(ApiCode.INSERT_ERROR);
+    public ApiResult registerService(String userAccount,String userPass) throws Exception {
+        VerifyParam.verifyParam(userAccount,userPass);
+        userMapper.insert(new SysUser().setAccount(userAccount).setPassword(userPass));
+        int i = 1/0;
+        return null;
     }
 
     @Override
@@ -50,6 +54,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         return password;
     }
+
+
 
     private ApiResult verifyLogin(String userAccount,String userPass){
         SysUser curUser = userMapper.selectOne(new LambdaQueryWrapper<SysUser>()
