@@ -1,11 +1,10 @@
 package com.nxftl.doc.sys.user.controller;
 
 import com.nxftl.doc.common.util.annotation.NotNull;
+import com.nxftl.doc.common.util.annotation.RequiredToken;
 import com.nxftl.doc.common.util.api.ApiResult;
-import com.nxftl.doc.sys.user.entity.SysUser;
 import com.nxftl.doc.sys.user.service.ISysUserService;
 import io.swagger.annotations.*;
-import javafx.scene.chart.ValueAxis;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +30,7 @@ public class SysUserController {
 
     @PostMapping("/register")
     @ApiOperation("注册后台用户")
-//    @RequiredToken
+    @RequiredToken
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userAccount",value = "用户账号",dataType = "String"),
             @ApiImplicitParam(name = "userPass",value = "用户密码",dataType = "String")
@@ -48,6 +47,12 @@ public class SysUserController {
     })
     public ApiResult login(@NotNull(value = "用户账号不许为空")String userAccount,@NotNull(value = "用户密码不许为空")String userPass) throws Exception {
         return userService.loginService(userAccount,userPass);
+    }
+
+    @ApiOperation("后台用户登出,具体实现已在登录拦截器处理")
+    @PostMapping("/logOut")
+    public void logOut(){
+
     }
 }
 

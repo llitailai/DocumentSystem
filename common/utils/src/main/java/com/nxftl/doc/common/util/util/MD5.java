@@ -87,6 +87,9 @@ public class MD5 {
         }
     }
 
-    public static void main(String[] args) {}
+    public static void main(String[] args) {
+        String generate = generate("123");
+        System.out.println(generate);
+    }
 
 }

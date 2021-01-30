@@ -1,5 +1,6 @@
 package com.nxftl.doc.sys.user.service.impl;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nxftl.doc.common.util.annotation.NotNull;
@@ -35,9 +36,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     public ApiResult registerService(String userAccount,String userPass) throws Exception {
         VerifyParam.verifyParam(userAccount,userPass);
-        userMapper.insert(new SysUser().setAccount(userAccount).setPassword(userPass));
-        int i = 1/0;
-        return null;
+        userMapper.insert(new SysUser().setAccount(userAccount).setPassword(MD5.generate(userPass)));
+        return new ApiResult().success(ApiCode.SUCCESS);
     }
 
     @Override
@@ -54,9 +54,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         return password;
     }
-
-
-
+    
     private ApiResult verifyLogin(String userAccount,String userPass){
         SysUser curUser = userMapper.selectOne(new LambdaQueryWrapper<SysUser>()
                 .select(SysUser::getDelFlag,

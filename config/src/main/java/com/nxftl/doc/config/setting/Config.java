@@ -36,4 +36,10 @@ public interface Config {
     String HAVE_NULL_PARAM = "您有未填写的信息";
 
     String GET = "get";
+
+    String LOG_OUT = "logOut";
+
+    String USER_PASS = "userPass";
+
+    String TOKEN = "token";
 }

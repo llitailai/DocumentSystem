@@ -1,18 +1,13 @@
 package com.nxftl.doc.sys.dict.controller;
 
 
+import com.nxftl.doc.common.util.annotation.RequiredToken;
 import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.sys.dict.entity.SysDict;
 import com.nxftl.doc.sys.dict.service.ISysDictService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -35,6 +30,7 @@ public class SysDictController {
 
     @PostMapping("/addDict")
     @ApiOperation(value = "添加字典项")
+    @RequiredToken
     @ApiImplicitParams({
             @ApiImplicitParam(name = "dictName",value = "字典项名称",required = true,dataType = "String"),
             @ApiImplicitParam(name = "dictCode",value = "字典项英文值",required = true,dataType = "String"),
@@ -44,4 +40,42 @@ public class SysDictController {
         return dictService.addDictService(dictName,dictCode,pCode);
     }
 
+
+    @GetMapping("/getDictByDictCode/{dictCode}")
+    @ApiOperation(value = "根据字典英文值(可以是pCode,可以是dictCode,得到的数据一定是唯一的)获取字典项详细信息")
+    @ApiImplicitParam(
+            name = "dictCode",
+            value = "字典英文值",
+            dataType = "String",
+            required = true,
+            paramType ="PathVariable")
+    public ApiResult getDictByDictCode(@PathVariable("dictCode") String dictCode) throws Exception {
+        return dictService.findDictByDictCodeService(dictCode);
+    }
+
+
+    @GetMapping("/getDictByDictName/{dictName}")
+    @ApiOperation(value = "根据字典名称获取字典项")
+    @ApiImplicitParam(
+            name = "dictName",
+            value = "字典名称",
+            dataType = "String",
+            required = true,
+            paramType = "PathVariable")
+    public ApiResult getDictByDictName(@PathVariable("dictName") String dictName) throws Exception {
+        return dictService.findDictByDictNameService(dictName);
+    }
+
+
+    @GetMapping("/getDictAnyByPCode/pCode")
+    @ApiOperation("根据父级code获取该父级code下所有子级字典项")
+    @ApiImplicitParam(
+            name = "pCode",
+            value = "父级字典英文值",
+            dataType = "String",
+            required = true,
+            paramType = "PathVariable")
+    public ApiResult getDictAnyByPCode(@PathVariable("pCode") String pCode) throws Exception {
+        return dictService.findDictAnyByPCodeService(pCode);
+    }
 }

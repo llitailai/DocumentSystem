@@ -44,7 +44,7 @@ public class VerifyParam {
     public static void verifyParam(Object ... obj) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         for (Object o : obj) {
             verifyString(o);
-            verifyParam(obj.getClass());
+            verifyParam(obj.getClass(),o);
         }
     }
 

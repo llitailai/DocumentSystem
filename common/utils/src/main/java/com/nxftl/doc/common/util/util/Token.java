@@ -20,7 +20,8 @@ public class Token {
 
     /**
      * 生成token
-     * @param user
+     * @param userId
+     * @param password md5加密后密码
      * @return
      */
     public static String createToken(Long userId,String password){
@@ -28,7 +29,7 @@ public class Token {
         calendar.add(Calendar.DATE,Config.TIME_OUT_DAY);
         String token = JWT.create()
                 .withClaim(Config.USER_ID, userId)
-                .withClaim(Config.KEY, DigestUtils.md5DigestAsHex(password.getBytes()))
+                .withClaim(Config.KEY, password)
                 .withExpiresAt(calendar.getTime())
                 .sign(Algorithm.HMAC256(Config.SECRET_KEY));
         return token;
@@ -60,14 +61,13 @@ public class Token {
 
     /**
      * 验证是否修改过密码
+     * @param password 数据库密码
      * @param decodedJWT
-     * @param password 密码
      * @return
      */
-    public static boolean isUpdatedPassword(DecodedJWT decodedJWT,String password){
-        String oldPwd = decodedJWT.getClaim(Config.KEY).asString();
-        String newPwd = DigestUtils.md5DigestAsHex(password.getBytes());
-        return oldPwd.equals(newPwd)?false:true;
+    public static boolean isUpdatedPassword(String password,DecodedJWT decodedJWT){
+        String oldPassword = decodedJWT.getClaim(Config.KEY).asString();
+        return oldPassword.equals(password);
     }
 
 
@@ -76,14 +76,27 @@ public class Token {
      * @param decodedJWT
      * @return
      */
-    public static boolean needCreate(DecodedJWT decodedJWT){
-        Date timeoutDate = decodedJWT.getExpiresAt();
+    public static boolean needCreateImpl(DecodedJWT decodedJWT,boolean invalid){
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE,Config.TIME_OUT_DAY - Config.NEED_CREATE_DAY);
-        if(timeoutDate.before(calendar.getTime())){
+        if(decodedJWT.getExpiresAt().before(!invalid?calendar.getTime():invalid())){
             return true;
         }
         return false;
     }
 
+    public static boolean needCreate(DecodedJWT decodedJWT){
+        return Token.needCreateImpl(decodedJWT,false);
+    }
+
+    public static boolean tokenInValid(DecodedJWT decodedJWT){
+        return Token.needCreateImpl(decodedJWT,true);
+    }
+
+
+    private static Date invalid(){
+        Date date = new Date();
+        date.setTime(System.currentTimeMillis()<<2);
+        return date;
+    }
 }

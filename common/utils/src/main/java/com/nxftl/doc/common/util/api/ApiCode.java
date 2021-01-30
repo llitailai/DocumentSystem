@@ -15,7 +15,10 @@ public enum ApiCode {
     ERROR(HttpStatus.ACCEPTED,"操作失败"),
     NOT_USER(HttpStatus.ACCEPTED,"没有该用户"),
     NOT_TOKEN(HttpStatus.NOT_TOKEN,"未携带Token"),
+    TOKEN_INVALID(HttpStatus.ERROR,"Token失效"),
+    QUERY_SUCCESS(HttpStatus.SUCCESS,"查询成功"),
     LOGIN_SUCCESS(HttpStatus.SUCCESS,"登录成功"),
+    IS_LOG_OUT(HttpStatus.LOG_OUT,"请登录"),
     INSERT_SUCCESS(HttpStatus.SUCCESS,"插入成功"),
     INSERT_ERROR(HttpStatus.ACCEPTED,"插入失败");
 

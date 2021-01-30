@@ -5,3 +5,15 @@ spring:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
   main:
     allow-bean-definition-overriding: true
+  redis:
+    host: 47.94.20.252
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+    timeout: 30000
+    database: 0

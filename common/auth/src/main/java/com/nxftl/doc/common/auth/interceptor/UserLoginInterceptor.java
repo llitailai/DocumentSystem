@@ -3,11 +3,13 @@ package com.nxftl.doc.common.auth.interceptor;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.nxftl.doc.common.util.util.BaseException;
 import com.nxftl.doc.common.util.util.Token;
 import com.nxftl.doc.common.util.annotation.RequiredToken;
 import com.nxftl.doc.common.util.api.ApiCode;
 import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.common.util.util.StringUtils;
+import com.nxftl.doc.config.setting.Config;
 import com.nxftl.doc.sys.user.service.ISysUserService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import static com.nxftl.doc.common.util.util.Token.tokenInValid;
 
 /**
  * @author darkltl
@@ -35,8 +39,24 @@ public class UserLoginInterceptor implements HandlerInterceptor {
         if(!(handler instanceof HandlerMethod)){
             return true;
         }
-        return isHaveAnnotationRequired(((HandlerMethod)handler).getMethod().isAnnotationPresent(RequiredToken.class),request.getHeader("token"),response);
+        isLogOut(request,response);
+
+        return isHaveAnnotationRequired(((HandlerMethod)handler).getMethod().isAnnotationPresent(RequiredToken.class),request.getHeader(Config.TOKEN),response);
     }
+
+
+    /**
+     * 是否调用的是登出接口
+     * @param request 请求对象
+     * @return
+     */
+    private void isLogOut(HttpServletRequest request,HttpServletResponse response) {
+        if(request.getRequestURL().toString().contains(Config.LOG_OUT)) {
+            DecodedJWT tokenInfo = Token.getTokenInfo(request.getHeader(Config.TOKEN));
+            createNewTokenBecauseTokenInvalid(tokenInfo,response,sysUserService.getPasswordById(Token.getUserId(tokenInfo)));
+        }
+    }
+
 
     /**
      * 是否拥有RequiredToken的注解,如果有则继续
@@ -46,7 +66,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
      * @return
      */
     private boolean isHaveAnnotationRequired(boolean isHaveAnnotationRequired,String token,HttpServletResponse response){
-        return isHaveAnnotationRequired?tokenIsNull(token, Token.getTokenInfo(token),response):true;
+        return  isHaveAnnotationRequired?tokenIsNull(token, Token.getTokenInfo(token),response):true;
     }
 
     /**
@@ -57,25 +77,36 @@ public class UserLoginInterceptor implements HandlerInterceptor {
      * @return
      */
     private boolean tokenIsNull(String token,DecodedJWT tokenInfo,HttpServletResponse response){
-        return StringUtils.isNotEmpty(token) && StringUtils.isNotEmpty(tokenInfo)?isUserUpdatePassword(sysUserService.getPasswordById(Token.getUserId(tokenInfo)),tokenInfo,response):result(response,new ApiResult().fail(ApiCode.NOT_TOKEN),false);
+        return  (StringUtils.isNotEmpty(token) &&
+                StringUtils.isNotEmpty(tokenInfo)) ?
+                isUserUpdatePassword(sysUserService.getPasswordById(Token.getUserId(tokenInfo)),tokenInfo,response) :
+                result(response,new ApiResult().fail(ApiCode.NOT_TOKEN),false);
     }
 
     /**
      * 判断用户密码是否更改,如果没有更改则继续,更改则token失效
-     * @param password
+     * @param md5 加密密码
      * @param tokenInfo
      * @param response
      * @return
      */
-    private boolean isUserUpdatePassword(String password,DecodedJWT tokenInfo,HttpServletResponse response){
-        return !Token.isUpdatedPassword(tokenInfo,password)?isNeedCreateNewToken(tokenInfo,response,password):result(response,new ApiResult().fail(ApiCode.NOT_TOKEN),false);
+    private boolean isUserUpdatePassword(String md5,DecodedJWT tokenInfo,HttpServletResponse response){
+        return !Token.isUpdatedPassword(md5,tokenInfo) ?isNeedCreateNewToken(tokenInfo,response,md5):result(response,new ApiResult<>().fail(ApiCode.TOKEN_INVALID),false);
     }
 
     private boolean isNeedCreateNewToken(DecodedJWT tokenInfo,HttpServletResponse response,String password){
         JSONObject tokenJson = new JSONObject();
         tokenJson.put("token",Token.createToken(Token.getUserId(tokenInfo),password));
-        return Token.needCreate(tokenInfo)?result(response,new ApiResult<>().success(ApiCode.SUCCESS,tokenJson),false):true;
+        return Token.needCreate(tokenInfo)?result(response,new ApiResult<>().success(ApiCode.TOKEN_INVALID,tokenJson),false):true;
     }
+
+    private boolean createNewTokenBecauseTokenInvalid(DecodedJWT tokenInfo,HttpServletResponse response,String password){
+        JSONObject tokenJson = new JSONObject();
+        tokenJson.put("token",Token.createToken(Token.getUserId(tokenInfo),password));
+        Token.tokenInValid(tokenInfo);
+        return result(response,new ApiResult<>().success(ApiCode.TOKEN_INVALID,tokenJson),false);
+    }
+
 
 
     private boolean result(HttpServletResponse response,ApiResult result,boolean resultBoolean){
