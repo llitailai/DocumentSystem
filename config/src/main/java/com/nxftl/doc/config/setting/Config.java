@@ -42,4 +42,6 @@ public interface Config {
     String USER_PASS = "userPass";
 
     String TOKEN = "token";
+
+    String PASSWORD_NOT_QUALIFIED = "密码需最短8-30位";
 }

@@ -3,7 +3,6 @@ package com.nxftl.doc.common.auth.interceptor;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.nxftl.doc.common.util.util.BaseException;
 import com.nxftl.doc.common.util.util.Token;
 import com.nxftl.doc.common.util.annotation.RequiredToken;
 import com.nxftl.doc.common.util.api.ApiCode;
@@ -20,8 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import static com.nxftl.doc.common.util.util.Token.tokenInValid;
 
 /**
  * @author darkltl
@@ -96,13 +93,13 @@ public class UserLoginInterceptor implements HandlerInterceptor {
 
     private boolean isNeedCreateNewToken(DecodedJWT tokenInfo,HttpServletResponse response,String password){
         JSONObject tokenJson = new JSONObject();
-        tokenJson.put("token",Token.createToken(Token.getUserId(tokenInfo),password));
+        tokenJson.put(Config.TOKEN,Token.createToken(Token.getUserId(tokenInfo),password));
         return Token.needCreate(tokenInfo)?result(response,new ApiResult<>().success(ApiCode.TOKEN_INVALID,tokenJson),false):true;
     }
 
     private boolean createNewTokenBecauseTokenInvalid(DecodedJWT tokenInfo,HttpServletResponse response,String password){
         JSONObject tokenJson = new JSONObject();
-        tokenJson.put("token",Token.createToken(Token.getUserId(tokenInfo),password));
+        tokenJson.put(Config.TOKEN,Token.createToken(Token.getUserId(tokenInfo),password));
         Token.tokenInValid(tokenInfo);
         return result(response,new ApiResult<>().success(ApiCode.TOKEN_INVALID,tokenJson),false);
     }
