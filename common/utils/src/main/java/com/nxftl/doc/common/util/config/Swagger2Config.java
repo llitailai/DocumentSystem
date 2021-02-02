@@ -72,6 +72,16 @@ public class Swagger2Config {
 
 
 
+    @Bean("showUserDocApi")
+    public Docket createShowUserDoc() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .groupName("showUserDocApi")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.nxftl.doc.show.user"))
+                .paths(PathSelectors.any())
+                .build();
+    }
 
 
 }

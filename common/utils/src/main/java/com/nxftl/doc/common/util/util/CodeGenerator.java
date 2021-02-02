@@ -43,7 +43,7 @@ public class CodeGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir")+"/sys/dict";
+        String projectPath = System.getProperty("user.dir")+"/show/show_user";
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("darkltl");
         gc.setOpen(false);

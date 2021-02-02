@@ -20,8 +20,9 @@ public interface ISysUserService extends IService<SysUser> {
 
     ApiResult registerService(String userAccount,String userPass) throws Exception;
 
-    ApiResult loginService(String userAccount,String password) throws Exception;
+    ApiResult loginService(String userAccount,String userPass) throws Exception;
 
     String getPasswordById(Long userId);
 
+    void asyncInsertLog();
 }

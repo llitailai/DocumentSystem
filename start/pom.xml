@@ -44,7 +44,7 @@
 
         <dependency>
             <groupId>com.nxftl</groupId>
-            <artifactId>show</artifactId>
+            <artifactId>show_user</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

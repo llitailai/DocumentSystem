@@ -1,6 +1,5 @@
 package com.nxftl.doc.sys.user.service.impl;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nxftl.doc.common.util.annotation.NotNull;
@@ -12,10 +11,8 @@ import com.nxftl.doc.config.setting.Config;
 import com.nxftl.doc.sys.user.entity.SysUser;
 import com.nxftl.doc.sys.user.mapper.SysUserMapper;
 import com.nxftl.doc.sys.user.service.ISysUserService;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
 /**
@@ -30,13 +27,13 @@ import java.util.HashMap;
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
     @Resource
-    private SysUserMapper userMapper;
+    private SysUserMapper sysUserMapper;
 
 
     @Override
     public ApiResult registerService(String userAccount,String userPass) throws Exception {
         VerifyParam.verifyParam(userAccount,userPass);
-        userMapper.insert(new SysUser().setAccount(userAccount).setPassword(MD5.generate(userPass)));
+        sysUserMapper.insert(new SysUser().setAccount(userAccount).setPassword(MD5.generate(userPass)));
         return new ApiResult().success(ApiCode.SUCCESS);
     }
 
@@ -48,15 +45,19 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public String getPasswordById(Long userId) {
-        String password = userMapper.getPasswordByUserIdSql(userId);
+        String password = sysUserMapper.getPasswordByUserIdSql(userId);
         if(StringUtils.isEmpty(password)){
             throw new BaseException(ApiCode.NOT_USER);
         }
         return password;
     }
-    
+
+    @Override
+    public void asyncInsertLog() {
+    }
+
     private ApiResult verifyLogin(String userAccount,String userPass){
-        SysUser curUser = userMapper.selectOne(new LambdaQueryWrapper<SysUser>()
+        SysUser curUser = sysUserMapper.selectOne(new LambdaQueryWrapper<SysUser>()
                 .select(SysUser::getDelFlag,
                         SysUser::getUserId,
                         SysUser::getUserStatus,

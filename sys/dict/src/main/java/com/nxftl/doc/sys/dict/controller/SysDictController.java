@@ -3,10 +3,8 @@ package com.nxftl.doc.sys.dict.controller;
 
 import com.nxftl.doc.common.util.annotation.RequiredToken;
 import com.nxftl.doc.common.util.api.ApiResult;
-import com.nxftl.doc.sys.dict.entity.SysDict;
 import com.nxftl.doc.sys.dict.service.ISysDictService;
 import io.swagger.annotations.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,7 +23,7 @@ import javax.annotation.Resource;
 public class SysDictController {
 
     @Resource
-    private ISysDictService dictService;
+    private ISysDictService iSysDictService;
 
 
     @PostMapping("/addDict")
@@ -37,7 +35,7 @@ public class SysDictController {
             @ApiImplicitParam(name = "pCode",value = "字典父级Code",required = false,dataType = "String")
     })
     public ApiResult addDict(String dictName,String dictCode,String pCode) throws Exception {
-        return dictService.addDictService(dictName,dictCode,pCode);
+        return iSysDictService.addDictService(dictName,dictCode,pCode);
     }
 
 
@@ -50,7 +48,7 @@ public class SysDictController {
             required = true,
             paramType ="PathVariable")
     public ApiResult getDictByDictCode(@PathVariable("dictCode") String dictCode) throws Exception {
-        return dictService.findDictByDictCodeService(dictCode);
+        return iSysDictService.findDictByDictCodeService(dictCode);
     }
 
 
@@ -63,7 +61,7 @@ public class SysDictController {
             required = true,
             paramType = "PathVariable")
     public ApiResult getDictByDictName(@PathVariable("dictName") String dictName) throws Exception {
-        return dictService.findDictByDictNameService(dictName);
+        return iSysDictService.findDictByDictNameService(dictName);
     }
 
 
@@ -76,6 +74,6 @@ public class SysDictController {
             required = true,
             paramType = "PathVariable")
     public ApiResult getDictAnyByPCode(@PathVariable("pCode") String pCode) throws Exception {
-        return dictService.findDictAnyByPCodeService(pCode);
+        return iSysDictService.findDictAnyByPCodeService(pCode);
     }
 }

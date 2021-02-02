@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.nxftl.doc.common.util.api.ApiCode;
 import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.common.util.util.VerifyParam;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nxftl.doc.sys.dict.entity.SysDict;
 import com.nxftl.doc.sys.dict.mapper.SysDictMapper;
 import com.nxftl.doc.sys.dict.service.ISysDictService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> implements ISysDictService {
 
     @Resource
-    private SysDictMapper dictMapper;
+    private SysDictMapper sysDictMapper;
 
     @Override
     public ApiResult addDictService(String dictName,String dictCode,String pCode) throws Exception {
@@ -33,7 +33,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
                 .setDictCode(dictCode)
                 .setPCode(pCode);
         VerifyParam.verifyParam(sysDict.getClass(),sysDict);
-        dictMapper.insert(sysDict);
+        sysDictMapper.insert(sysDict);
         return new ApiResult().success();
     }
 
@@ -41,7 +41,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     public ApiResult findDictByDictNameService(String dictName)throws Exception {
         VerifyParam.verifyParam(dictName);
         return new ApiResult().success(ApiCode.QUERY_SUCCESS,
-                dictMapper.selectOne(new LambdaQueryWrapper<SysDict>()
+                sysDictMapper.selectOne(new LambdaQueryWrapper<SysDict>()
                         .eq(SysDict::getDictName,dictName)));
     }
 
@@ -49,7 +49,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     public ApiResult findDictByDictCodeService(String dictCode) throws Exception{
         VerifyParam.verifyParam(dictCode);
         return new ApiResult().success(ApiCode.QUERY_SUCCESS,
-                dictMapper.selectOne(new LambdaQueryWrapper<SysDict>()
+                sysDictMapper.selectOne(new LambdaQueryWrapper<SysDict>()
                         .eq(SysDict::getDictCode,dictCode)));
     }
 
@@ -57,7 +57,7 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     public ApiResult findDictAnyByPCodeService(String pCode) throws Exception{
         VerifyParam.verifyParam(pCode);
         return new ApiResult().success(ApiCode.QUERY_SUCCESS,
-                dictMapper.selectList(new LambdaQueryWrapper<SysDict>()
+                sysDictMapper.selectList(new LambdaQueryWrapper<SysDict>()
                         .eq(SysDict::getPCode,pCode)));
     }
 }

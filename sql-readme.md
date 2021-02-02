@@ -95,6 +95,35 @@ create table sys_role_user(
 )comment '用户角色权限表';
 
 
+-- show
+
+create table user(
+    user_id smallint primary key auto_increment,
+    tel char(11) default '' comment '用户电话号码',
+    email char(32) default '' comment '邮箱'
+) comment '用户表';
+
+create table user_info(
+    info_id smallint primary key auto_increment,
+    user_name char(22) default '' comment '用户名',
+    head_image varchar(128) default '' comment '用户头像',
+    user_intro char(30) default '' comment '用户简介',
+    user_id smallint not null comment '用户ID',
+    create_time datetime not null comment '用户创建时间'
+) comment '用户个人信息表';
+
+create table user_article(
+    article_id smallint primary key auto_increment,
+    article_name char(22) default '' comment '文章名称',
+    article_addr varchar(128) default '' comment '文章地址',
+    is_original tinyint(1) default 0 comment '是否原创,不是原创则就是链接地址',
+    is_display tinyint(1) default 0 comment '是否显示',
+    article_type varchar(15) not null comment '文章类型,多个以&分割',
+    user_id smallint not null comment '创建人',
+    create_time datetime not null comment '创建时间',
+    update_time datetime not null comment '修改时间'
+) comment '文章表';
+
 
 ```
 
@@ -103,5 +132,4 @@ create table sys_role_user(
     超级管理员
     管理员
     普通用户
-
     普通用户 查看,

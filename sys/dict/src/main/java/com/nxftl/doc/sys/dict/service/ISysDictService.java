@@ -1,8 +1,8 @@
 package com.nxftl.doc.sys.dict.service;
 
 import com.nxftl.doc.common.util.api.ApiResult;
-import com.nxftl.doc.sys.dict.entity.SysDict;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.nxftl.doc.sys.dict.entity.SysDict;
 
 /**
  * <p>

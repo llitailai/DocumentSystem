@@ -4,6 +4,8 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -18,8 +20,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         exclude = {SecurityAutoConfiguration.class})
 @EnableSwagger2
 @MapperScan(basePackages = {"com.nxftl.doc.*.*.mapper"})
-@ComponentScan(basePackages = {"com.nxftl.doc","com.nxftl.doc.sys.*","com.nxftl.doc.sys.log"})
+@ComponentScan(basePackages = {"com.nxftl.doc","com.nxftl.doc.sys.*","com.nxftl.doc.sys.log","com.nxftl.doc.show.*","com.nxftl.doc.sys.dict"})
 @EnableTxManager(pointcut = {"public * com.nxftl.doc.sys.*.service..*(..)","public * com.nxftl.doc.show.*.service..*(..)"})
+@EnableAsync(proxyTargetClass = true) //开启异步
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class DocSpringBootApplication {
     public static void main(String[] args){
         SpringApplication.run(DocSpringBootApplication.class, args);

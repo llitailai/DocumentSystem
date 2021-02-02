@@ -26,7 +26,7 @@ public class SysUserController {
 
 
     @Resource
-    private ISysUserService userService;
+    private ISysUserService iSysUserService;
 
     @PostMapping("/register")
     @ApiOperation("注册后台用户")
@@ -36,7 +36,7 @@ public class SysUserController {
             @ApiImplicitParam(name = "userPass",value = "用户密码",dataType = "String")
     })
     public ApiResult register(@NotNull(value = "用户账号不许为空") String userAccount, @NotNull(value = "用户密码不许为空") String userPass) throws Exception {
-        return userService.registerService(userAccount,userPass);
+        return iSysUserService.registerService(userAccount,userPass);
     }
 
     @ApiOperation("后台用户登录")
@@ -46,7 +46,7 @@ public class SysUserController {
         @ApiImplicitParam(name = "userPass",value = "用户密码",dataType = "String")
     })
     public ApiResult login(@NotNull(value = "用户账号不许为空")String userAccount,@NotNull(value = "用户密码不许为空")String userPass) throws Exception {
-        return userService.loginService(userAccount,userPass);
+        return iSysUserService.loginService(userAccount,userPass);
     }
 
     @ApiOperation("后台用户登出,具体实现已在登录拦截器处理")

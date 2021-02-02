@@ -1,7 +1,8 @@
 package com.nxftl.doc.sys.dict.mapper;
 
-import com.nxftl.doc.sys.dict.entity.SysDict;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.nxftl.doc.sys.dict.entity.SysDict;
 
 /**
  * <p>
