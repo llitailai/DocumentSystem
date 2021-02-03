@@ -63,6 +63,8 @@ public class WebConfig implements WebMvcConfigurer {
         List<String> excludePath = new ArrayList<>();
         //排除拦截，除了注册登录(此时还没token)，其他都拦截
         excludePath.add("/user/sysUser/login");  //登录
+        excludePath.add("/show/user/register");
+        excludePath.add("/show/user/login");
         excludePath.add("/static/**");  //静态资源
         excludePath.add("/swagger-resources/**");
         excludePath.add("/webjars/**");

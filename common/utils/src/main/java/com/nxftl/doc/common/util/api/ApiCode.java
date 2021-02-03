@@ -19,6 +19,8 @@ public enum ApiCode {
     NOT_TOKEN(HttpStatus.NOT_TOKEN,"未携带Token"),
     INVALID_PASSWORD(HttpStatus.ACCEPTED, Config.PASSWORD_NOT_QUALIFIED),
     INVALID_EMAIL(HttpStatus.ACCEPTED,Config.EMAIL_NOT_QUALIFIED),
+    INVALID_TEL(HttpStatus.ACCEPTED,Config.TEL_NOT_QUALIFIED),
+    NOT_METHOD(HttpStatus.ERROR,Config.NOT_METHOD),
     PARAM_IS_NULL(HttpStatus.ACCEPTED,"参数为空"),
     TOKEN_INVALID(HttpStatus.ERROR,"Token失效"),
     QUERY_SUCCESS(HttpStatus.SUCCESS,"查询成功"),

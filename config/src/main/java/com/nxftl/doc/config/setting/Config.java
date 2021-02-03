@@ -48,5 +48,11 @@ public interface Config {
     String EMAIL = "email";
 
     String TEL = "tel";
+
     String EMAIL_NOT_QUALIFIED = "邮箱格式不正确";
+
+
+    String TEL_NOT_QUALIFIED = "电话格式不正确" ;
+
+    String NOT_METHOD = "未通过模糊查询找到方法";
 }

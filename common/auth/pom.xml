@@ -25,6 +25,11 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.nxftl</groupId>
+            <artifactId>show_user</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
 
     </dependencies>

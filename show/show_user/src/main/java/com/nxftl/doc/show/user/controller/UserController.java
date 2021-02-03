@@ -1,6 +1,7 @@
 package com.nxftl.doc.show.user.controller;
 
 
+import com.nxftl.doc.common.util.annotation.ValidAny;
 import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.show.user.entity.User;
 import com.nxftl.doc.show.user.service.IUserService;
@@ -32,7 +33,7 @@ public class UserController {
 
     @PostMapping("/register")
     @ApiOperation(value = "注册前台用户")
-    public ApiResult registerUser(User user){
+    public ApiResult registerUser(@ValidAny(isEntity = true)User user){
         return userService.registerUserService(user);
     }
 }
