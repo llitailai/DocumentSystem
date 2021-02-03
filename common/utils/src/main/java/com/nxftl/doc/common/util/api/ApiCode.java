@@ -2,6 +2,7 @@ package com.nxftl.doc.common.util.api;
 
 
 import com.nxftl.doc.common.util.http.HttpStatus;
+import com.nxftl.doc.config.setting.Config;
 
 /**
  * @author darkltl
@@ -13,8 +14,12 @@ public enum ApiCode {
 
     SUCCESS(HttpStatus.SUCCESS,"操作成功"),
     ERROR(HttpStatus.ACCEPTED,"操作失败"),
+    NOT_ONLY(HttpStatus.ACCEPTED,"字段不唯一"),
     NOT_USER(HttpStatus.ACCEPTED,"没有该用户"),
     NOT_TOKEN(HttpStatus.NOT_TOKEN,"未携带Token"),
+    INVALID_PASSWORD(HttpStatus.ACCEPTED, Config.PASSWORD_NOT_QUALIFIED),
+    INVALID_EMAIL(HttpStatus.ACCEPTED,Config.EMAIL_NOT_QUALIFIED),
+    PARAM_IS_NULL(HttpStatus.ACCEPTED,"参数为空"),
     TOKEN_INVALID(HttpStatus.ERROR,"Token失效"),
     QUERY_SUCCESS(HttpStatus.SUCCESS,"查询成功"),
     LOGIN_SUCCESS(HttpStatus.SUCCESS,"登录成功"),

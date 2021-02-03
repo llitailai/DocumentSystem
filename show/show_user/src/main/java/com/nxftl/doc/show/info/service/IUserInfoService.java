@@ -14,5 +14,5 @@ import com.nxftl.doc.show.info.entity.UserInfo;
  */
 public interface IUserInfoService extends IService<UserInfo> {
 
-    ApiResult addUserInfoService(UserInfo userInfo);
+    void addUserInfoAsyncService(UserInfo userInfo);
 }

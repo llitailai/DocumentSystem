@@ -44,4 +44,9 @@ public interface Config {
     String TOKEN = "token";
 
     String PASSWORD_NOT_QUALIFIED = "密码需最短8-30位";
+
+    String EMAIL = "email";
+
+    String TEL = "tel";
+    String EMAIL_NOT_QUALIFIED = "邮箱格式不正确";
 }

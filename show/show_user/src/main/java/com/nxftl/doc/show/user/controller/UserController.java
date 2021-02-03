@@ -33,7 +33,6 @@ public class UserController {
     @PostMapping("/register")
     @ApiOperation(value = "注册前台用户")
     public ApiResult registerUser(User user){
-        ApiResult apiResult = userService.registerUserService(user);
-        return apiResult;
+        return userService.registerUserService(user);
     }
 }

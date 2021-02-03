@@ -1,5 +1,9 @@
 package com.nxftl.doc.common.util.util;
 
+import com.nxftl.doc.common.util.api.ApiCode;
+import com.nxftl.doc.config.setting.Config;
+import com.nxftl.doc.config.setting.reg.Reg;
+
 /**
  * @author darkltl
  * @email darkltl@163.com
@@ -15,15 +19,36 @@ public class RegUtil {
      * @author lqyao
      * @since 2015-09-24
      */
-    public static final boolean isPassword(String password){
-        if (null != password && !password.trim().equals("")) {
-            password = password.trim();
-            if(password.length() >= 8 && password.length() <= 30){
-                return true;
-            }
+    public static final void isPassword(String password){
+
+        if (StringUtils.isEmpty(password)) {
+            throw new BaseException(ApiCode.PARAM_IS_NULL);
         }
-        return false;
+        verifyPassword(password);
     }
 
+    /**
+     * 校验邮箱是否正确
+     * @param email
+     */
+    public static final void isEmail(String email){
+        if(StringUtils.isEmpty(email))
+            throw new BaseException(ApiCode.PARAM_IS_NULL);
+        verifyEmail(email);
+    }
+
+    private static void verifyPassword(String password) {
+        if(password.length() <= 8 && password.length() >= 30){
+            throw new BaseException(ApiCode.INVALID_PASSWORD);
+        }
+    }
+
+
+
+    private static void verifyEmail(String email) {
+        if(!email.matches(Reg.EMAIL.getRegValue())){
+            throw new BaseException(ApiCode.INVALID_EMAIL);
+        }
+    }
 
 }

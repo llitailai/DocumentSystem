@@ -2,6 +2,8 @@ package com.nxftl.doc.show.user.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nxftl.doc.common.util.api.ApiResult;
+import com.nxftl.doc.common.util.util.OnlyUtil;
+import com.nxftl.doc.config.setting.Config;
 import com.nxftl.doc.show.info.entity.UserInfo;
 import com.nxftl.doc.show.info.mapper.UserInfoMapper;
 import com.nxftl.doc.show.info.service.IUserInfoService;
@@ -32,16 +34,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Resource
     IUserInfoService iUserInfoService;
 
+    @Resource
+    OnlyUtil onlyUtil;
+
     @Override
-    @Async
     public ApiResult registerUserService(User user) {
-        ApiResult success = new ApiResult().success();
-        userMapper.insert(user);
-        iUserInfoService.addUserInfoService(new UserInfo().setUserId(user.getUserId()).setCreateTime(new Date()));
-        return success;
+        distinct(user);
+        int result = userMapper.insert(user);
+        iUserInfoService.addUserInfoAsyncService(new UserInfo().setUserId(user.getUserId()).setCreateTime(new Date()));
+        return result>0?new ApiResult<>().success():new ApiResult<>().fail();
     }
 
-
+    /**
+     * 判断是否重复,如果重复则不可
+     * @param user
+     */
+    private void distinct(User user) {
+        onlyUtil.invokeIsOnly(
+                onlyUtil.invokeGetTableName(user.getClass()),
+                onlyUtil.invokeEncapsulationColumnAndValue(
+                        true,
+                        Config.EMAIL,user.getEmail(),
+                        Config.TEL,user.getTel()));
+    }
 
 
 }

@@ -5,6 +5,7 @@ import com.nxftl.doc.show.info.entity.UserInfo;
 import com.nxftl.doc.show.info.mapper.UserInfoMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nxftl.doc.show.info.service.IUserInfoService;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,8 +25,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     UserInfoMapper userInfoMapper;
 
     @Override
-    public ApiResult addUserInfoService(UserInfo userInfo) {
+    @Async
+    public void addUserInfoAsyncService(UserInfo userInfo) {
         userInfoMapper.insert(userInfo);
-        return new ApiResult().success();
     }
 }

@@ -1,7 +1,7 @@
 package com.nxftl.doc.show.user.service;
 
-import com.nxftl.doc.common.util.api.ApiResult;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.show.user.entity.User;
 
 /**
@@ -14,5 +14,9 @@ import com.nxftl.doc.show.user.entity.User;
  */
 public interface IUserService extends IService<User> {
 
+    /**
+     * 异步方法不要返回值,发生异常由全局异常处理
+     * @param user
+     */
     ApiResult registerUserService(User user);
 }
