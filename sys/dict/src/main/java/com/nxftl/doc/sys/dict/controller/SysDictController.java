@@ -2,6 +2,7 @@ package com.nxftl.doc.sys.dict.controller;
 
 
 import com.nxftl.doc.common.util.annotation.RequiredToken;
+import com.nxftl.doc.common.util.annotation.ValidAny;
 import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.sys.dict.service.ISysDictService;
 import io.swagger.annotations.*;
@@ -34,7 +35,7 @@ public class SysDictController {
             @ApiImplicitParam(name = "dictCode",value = "字典项英文值",required = true,dataType = "String"),
             @ApiImplicitParam(name = "pCode",value = "字典父级Code",required = false,dataType = "String")
     })
-    public ApiResult addDict(String dictName,String dictCode,String pCode) throws Exception {
+    public ApiResult addDict(@ValidAny(exist = true,existError = "字典项名称不能为空") String dictName, @ValidAny(exist = true,existError = "字典项英文值不能为空") String dictCode, String pCode)  {
         return iSysDictService.addDictService(dictName,dictCode,pCode);
     }
 
@@ -47,7 +48,7 @@ public class SysDictController {
             dataType = "String",
             required = true,
             paramType ="PathVariable")
-    public ApiResult getDictByDictCode(@PathVariable("dictCode") String dictCode) throws Exception {
+    public ApiResult getDictByDictCode(@PathVariable("dictCode") @ValidAny(exist = true,existError = "字典项英文值不能为空")String dictCode)  {
         return iSysDictService.findDictByDictCodeService(dictCode);
     }
 
@@ -60,12 +61,12 @@ public class SysDictController {
             dataType = "String",
             required = true,
             paramType = "PathVariable")
-    public ApiResult getDictByDictName(@PathVariable("dictName") String dictName) throws Exception {
+    public ApiResult getDictByDictName(@PathVariable("dictName")@ValidAny(exist = true,existError = "字典项名称不能为空") String dictName)  {
         return iSysDictService.findDictByDictNameService(dictName);
     }
 
 
-    @GetMapping("/getDictAnyByPCode/pCode")
+    @GetMapping("/getDictAnyByPCode/{pCode}")
     @ApiOperation("根据父级code获取该父级code下所有子级字典项")
     @ApiImplicitParam(
             name = "pCode",
@@ -73,7 +74,7 @@ public class SysDictController {
             dataType = "String",
             required = true,
             paramType = "PathVariable")
-    public ApiResult getDictAnyByPCode(@PathVariable("pCode") String pCode) throws Exception {
+    public ApiResult getDictAnyByPCode(@PathVariable("pCode")@ValidAny(exist = true,existError = "pCode不能为空") String pCode)  {
         return iSysDictService.findDictAnyByPCodeService(pCode);
     }
 }

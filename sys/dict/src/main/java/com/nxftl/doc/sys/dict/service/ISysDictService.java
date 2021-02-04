@@ -21,7 +21,7 @@ public interface ISysDictService extends IService<SysDict> {
      * @param pCode 父级code
      * @return
      */
-    ApiResult addDictService(String dictName,String dictCode,String pCode) throws Exception;
+    ApiResult addDictService(String dictName,String dictCode,String pCode);
 
 
     /**
@@ -30,7 +30,7 @@ public interface ISysDictService extends IService<SysDict> {
      * @return
      * @throws Exception
      */
-    ApiResult findDictByDictNameService(String dictName) throws Exception;
+    ApiResult findDictByDictNameService(String dictName);
 
     /**
      * 根据字典英文值获取字典项(单查询)
@@ -38,7 +38,7 @@ public interface ISysDictService extends IService<SysDict> {
      * @return
      * @throws Exception
      */
-    ApiResult findDictByDictCodeService(String dictCode) throws Exception;
+    ApiResult findDictByDictCodeService(String dictCode);
 
     /**
      * 根据父级Code查询所有属于该父级code下的字典项
@@ -46,5 +46,5 @@ public interface ISysDictService extends IService<SysDict> {
      * @return
      * @throws Exception
      */
-    ApiResult findDictAnyByPCodeService(String pCode) throws Exception;
+    ApiResult findDictAnyByPCodeService(String pCode);
 }

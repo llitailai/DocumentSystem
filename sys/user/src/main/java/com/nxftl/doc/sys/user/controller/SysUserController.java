@@ -2,6 +2,7 @@ package com.nxftl.doc.sys.user.controller;
 
 import com.nxftl.doc.common.util.annotation.NotNull;
 import com.nxftl.doc.common.util.annotation.RequiredToken;
+import com.nxftl.doc.common.util.annotation.ValidAny;
 import com.nxftl.doc.common.util.api.ApiResult;
 import com.nxftl.doc.sys.user.service.ISysUserService;
 import io.swagger.annotations.*;
@@ -30,12 +31,11 @@ public class SysUserController {
 
     @PostMapping("/register")
     @ApiOperation("注册后台用户")
-    @RequiredToken
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userAccount",value = "用户账号",dataType = "String"),
             @ApiImplicitParam(name = "userPass",value = "用户密码",dataType = "String")
     })
-    public ApiResult register(@NotNull(value = "用户账号不许为空") String userAccount, @NotNull(value = "用户密码不许为空") String userPass) throws Exception {
+    public ApiResult register(@ValidAny(existError = "用户账号不许为空",exist = true) String userAccount, @ValidAny(existError = "用户密码不许为空",exist = true,password = true) String userPass) throws Exception {
         return iSysUserService.registerService(userAccount,userPass);
     }
 
@@ -45,7 +45,7 @@ public class SysUserController {
         @ApiImplicitParam(name = "userAccount",value = "用户账号",dataType = "String"),
         @ApiImplicitParam(name = "userPass",value = "用户密码",dataType = "String")
     })
-    public ApiResult login(@NotNull(value = "用户账号不许为空")String userAccount,@NotNull(value = "用户密码不许为空")String userPass) throws Exception {
+    public ApiResult login(@ValidAny(existError = "用户账号不许为空",exist = true)String userAccount,@ValidAny(existError = "用户密码不许为空",exist = true,password = true)String userPass) throws Exception {
         return iSysUserService.loginService(userAccount,userPass);
     }
 

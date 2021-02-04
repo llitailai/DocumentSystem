@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.nxftl.doc.common.util.annotation.NotNull;
+import com.nxftl.doc.common.util.annotation.ValidAny;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,7 @@ public class SysUser implements Serializable {
     /**
      * 账号
      */
-    @NotNull(value = "用户账号不许为空")
+    @ValidAny(exist = true,existError = "用户账号不许为空")
     @ApiModelProperty(value = "用户账号")
     private String account;
 
@@ -50,7 +51,7 @@ public class SysUser implements Serializable {
      * 密码
      */
     @ApiModelProperty(value = "用户密码")
-    @NotNull(value = "用户密码不许为空")
+    @ValidAny(password = true,exist = true,existError = "用户密码不许为空")
     private String password;
 
     /**

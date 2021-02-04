@@ -27,7 +27,16 @@ public @interface ValidAny {
      */
     public String value() default "";
 
-    public boolean exit() default false;
+    public boolean exist() default false;
 
-    public String exitError() default "";
+    public String existError() default "";
+
+    /**
+     * 一个实体中如果由多个groupExist
+     * 那么group之间有一个不为空即可
+     * @return
+     */
+    public boolean groupExist() default false;
+
+    public boolean distinct() default false;
 }

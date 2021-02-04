@@ -1,6 +1,7 @@
 package com.nxftl.doc.common.auth.aop;
 
 import com.nxftl.doc.common.util.annotation.ValidAny;
+import com.nxftl.doc.common.util.api.ApiCode;
 import com.nxftl.doc.common.util.http.HttpStatus;
 import com.nxftl.doc.common.util.util.BaseException;
 import com.nxftl.doc.common.util.util.RegUtil;
@@ -17,16 +18,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author darkltl
  * @email darkltl@163.com
  * @date 2021/2/3 14:52
  * @discription
+ *  这是一个非常好玩的AOP ,
+ *    这个AOP主要作用是对方法进行拦截,对参数进行校验
+ *     它可以根据 ValidAny 注解去根据校验规则,自动找寻校验方法
  */
 @Aspect
 @Component
 public class CheckAllParamAop {
+
 
 
     /**
@@ -34,11 +40,10 @@ public class CheckAllParamAop {
      * @param joinPoint
      * @throws NoSuchMethodException 未找到方法异常
      * @throws IllegalAccessException 非法访问私有变量异常
-     * @throws InvocationTargetException 原来的异常包装起来所抛出的异常
      * @throws NoSuchFieldException 未找到字段异常
      */
     @Before("execution(public * com.nxftl.doc.*.*.controller..*(..))")
-    public void checkAllParam(JoinPoint joinPoint) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
+    public void checkAllParam(JoinPoint joinPoint) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
         check(joinPoint);
     }
 
@@ -47,10 +52,9 @@ public class CheckAllParamAop {
      * @param joinPoint
      * @throws NoSuchMethodException
      * @throws IllegalAccessException
-     * @throws InvocationTargetException
      * @throws NoSuchFieldException
      */
-    private void check(JoinPoint joinPoint) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
+    private void check(JoinPoint joinPoint) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
         Object[] args = joinPoint.getArgs();
         if(args == null)
             return;
@@ -65,9 +69,8 @@ public class CheckAllParamAop {
      * @throws NoSuchMethodException
      * @throws IllegalAccessException
      * @throws NoSuchFieldException
-     * @throws InvocationTargetException
      */
-    private void checkMethodParameter(Object [] args,Parameter[] parameters) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
+    private void checkMethodParameter(Object [] args,Parameter[] parameters) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
         for (int i = 0 , let = parameters.length; i < let; i++) {
             Parameter parameter = parameters[i];
 
@@ -75,7 +78,7 @@ public class CheckAllParamAop {
                 continue;
 
             if(isPrimitive(parameter.getType())){
-                checkPrimitive(args[i],parameter);
+                transferPrimitive(args,parameters,args[i],parameter);
                 continue;
             }
 
@@ -83,37 +86,96 @@ public class CheckAllParamAop {
         }
     }
 
+    private void transferPrimitive(Object[] args, Parameter[] parameters, Object arg, Parameter parameter) throws NoSuchFieldException, IllegalAccessException {
+        if(!parameter.getAnnotation(ValidAny.class).groupExist()){
+            checkPrimitive(arg,parameter);
+            return;
+        }
+        checkGroupPrimitive(args,parameters);
+    }
 
-    private void checkEntity(Object[] args, Parameter parameter) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
+    private void checkGroupPrimitive(Object[] args, Parameter[] parameters) throws NoSuchFieldException, IllegalAccessException {
+        ValidAny annotation = null;
+        for (int i = 0,let = parameters.length; i < let; i++) {
+             annotation = parameters[i].getAnnotation(ValidAny.class);
+            if(annotation != null && annotation.groupExist() && StringUtils.isNotEmpty(args[i])){
+                checkPrimitive(args[i],parameters[i]);
+            }
+        }
+        throw new BaseException(HttpStatus.ACCEPTED,annotation.existError());
+    }
+
+
+    private void checkEntity(Object[] args, Parameter parameter) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
         Class<?> paramClass = parameter.getType();
         Object obj = Arrays.stream(args).filter(arg -> paramClass.isAssignableFrom(arg.getClass())).findFirst().get();
         handleFields(obj,paramClass.getDeclaredFields());
     }
 
-    private void handleFields(Object obj, Field[] declaredFields) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
+    private void handleFields(Object obj, Field[] declaredFields) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
         for (Field declaredField : declaredFields) {
             ValidAny annotation = declaredField.getAnnotation(ValidAny.class);
             if(annotation!=null){
-                entityExit(annotation,obj,declaredField);
+                transfer(annotation,obj,declaredField,declaredFields);
             }
         }
     }
 
+    private void transfer(ValidAny annotation, Object obj, Field declaredField,Field[] declaredFields) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
+        if(!annotation.groupExist()){
+            entityExist(annotation,obj,declaredField);
+        }
+        handleGroupExist(obj,declaredFields);
+    }
 
-    private void entityExit(ValidAny annotation,Object obj, Field declaredField) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException, InvocationTargetException {
-        Object invoke = null;
-        if(annotation.exit()){
-            invoke = obj.getClass().getMethod(Config.GET+getMethodName(declaredField.getName())).invoke(obj);
-            if(StringUtils.isEmpty(invoke)){
-                throw new BaseException(HttpStatus.ACCEPTED,annotation.value());
+    private void handleGroupExist(Object obj,Field[] declaredFields) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
+        List<Field> fields = Arrays.stream(declaredFields).filter(field -> field.getAnnotation(ValidAny.class)!=null && field.getAnnotation(ValidAny.class).groupExist()).collect(Collectors.toList());
+        checkGroupFieldsIsNull(obj,fields);
+    }
+
+    private void checkGroupFieldsIsNull(Object obj,List<Field> fields) throws NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
+        try {
+            for (Field field : fields) {
+                Object invoke = obj.getClass().getMethod(Config.GET + getMethodName(field.getName())).invoke(obj);
+                if(StringUtils.isNotEmpty(invoke)){
+                    ValidAny annotation1 = field.getAnnotation(ValidAny.class);
+                    isWho(annotation1,invoke);
+                    return;
+                }
             }
-        }else{
-            invoke = obj.getClass().getMethod(Config.GET+getMethodName(declaredField.getName())).invoke(obj);
+            throw new BaseException(ApiCode.PARAM_IS_NULL);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
-        if(StringUtils.isEmpty(invoke)){
-            return;
+    }
+
+
+    private void entityExist(ValidAny annotation,Object obj, Field declaredField)  {
+        try {
+            Object invoke = null;
+            if(annotation.exist()){
+                invoke = obj.getClass().getMethod(Config.GET+getMethodName(declaredField.getName())).invoke(obj);
+                if(StringUtils.isEmpty(invoke)){
+                    throw new BaseException(HttpStatus.ACCEPTED,annotation.value());
+                }
+            }else{
+                invoke = obj.getClass().getMethod(Config.GET+getMethodName(declaredField.getName())).invoke(obj);
+            }
+            if(StringUtils.isEmpty(invoke)){
+                return;
+            }
+            isWho(annotation,invoke);
+
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
         }
-        isWho(annotation,invoke);
+
     }
 
     private static String getMethodName(String filedName){
@@ -143,10 +205,10 @@ public class CheckAllParamAop {
      * @throws IllegalAccessException
      * @throws NoSuchFieldException
      */
-    private void checkPrimitive(Object arg,Parameter parameter) throws IllegalAccessException, NoSuchFieldException, InvocationTargetException {
+    private void checkPrimitive(Object arg,Parameter parameter) throws NoSuchFieldException, IllegalAccessException {
         ValidAny annotation = parameter.getAnnotation(ValidAny.class);
-        if(annotation != null && annotation.exit() && StringUtils.isEmpty(arg)){
-            throw new BaseException(HttpStatus.ACCEPTED,annotation.exitError());
+        if(annotation != null && annotation.exist() && StringUtils.isEmpty(arg)){
+            throw new BaseException(HttpStatus.ACCEPTED,annotation.existError());
         }
         checkPrimitiveIsWho(annotation,arg);
     }
@@ -158,7 +220,7 @@ public class CheckAllParamAop {
      * @throws IllegalAccessException
      * @throws NoSuchFieldException
      */
-    private void checkPrimitiveIsWho(ValidAny validAny,Object arg) throws IllegalAccessException, NoSuchFieldException, InvocationTargetException {
+    private void checkPrimitiveIsWho(ValidAny validAny,Object arg) throws IllegalAccessException, NoSuchFieldException {
         isWho(validAny,arg);
     }
 
@@ -169,11 +231,13 @@ public class CheckAllParamAop {
      * @throws NoSuchFieldException
      * @throws IllegalAccessException
      */
-    private void isWho(ValidAny validAny,Object arg) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+    private void isWho(ValidAny validAny,Object arg) throws NoSuchFieldException, IllegalAccessException {
         InvocationHandler h = getProxy(validAny);
         Field memberValues = h.getClass().getDeclaredField("memberValues");
         memberValues.setAccessible(true);
-        RegUtil.invokeFuzzyInvokeMethod(result(((LinkedHashMap)memberValues.get(h))),(String) arg);
+        String result = result(((LinkedHashMap) memberValues.get(h)));
+        if(result == null) return;
+        RegUtil.invokeFuzzyInvokeMethod(result,(String) arg);
     }
 
     /**
@@ -189,13 +253,19 @@ public class CheckAllParamAop {
             if(!StringUtils.isNotHaveUpperCase((String)entry.getKey()))
                 continue;
             if(entry.getValue() instanceof Boolean){
-                if(((Boolean)entry.getValue()).booleanValue()){
+                if(((Boolean)entry.getValue()).booleanValue() && !excludeExist((String) entry.getKey())){
                     return (String)entry.getKey();
                 }
             }
             continue;
         }
         return null;
+    }
+
+    private boolean excludeExist(String key) {
+        if("exist".equals(key.toLowerCase().trim()))
+            return true;
+        return false;
     }
 
 

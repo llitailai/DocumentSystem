@@ -1,21 +1,16 @@
 package com.nxftl.doc.common.util.util;
 
 import com.nxftl.doc.common.util.api.ApiCode;
-import com.nxftl.doc.config.setting.Config;
 import com.nxftl.doc.config.setting.reg.Reg;
-import lombok.Data;
-import org.springframework.jmx.access.InvocationFailureException;
-
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 
 /**
  * @author darkltl
  * @email darkltl@163.com
  * @date 2021/2/1 17:29
  * @discription
+ *  所有校验方法具体实现必须用verify作为前缀开头
  */
 public class RegUtil {
 
@@ -66,7 +61,7 @@ public class RegUtil {
     }
 
     private static Message verifyPassword(String password) {
-        if(password.length() <= 8 && password.length() >= 30){
+        if(password.length() <= 8 || password.length() >= 30){
             return new Message().setApiCode(ApiCode.INVALID_PASSWORD);
         }
         return null;
@@ -76,7 +71,7 @@ public class RegUtil {
 
     private static Message verifyEmail(String email) {
         if(!email.matches(Reg.EMAIL.getRegValue()) || email.length()>64){
-            return new Message().setApiCode(ApiCode.INVALID_PASSWORD);
+            return new Message().setApiCode(ApiCode.INVALID_EMAIL);
         }
         return null;
     }

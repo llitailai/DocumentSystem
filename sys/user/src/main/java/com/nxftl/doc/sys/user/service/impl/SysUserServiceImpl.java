@@ -31,15 +31,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
 
     @Override
-    public ApiResult registerService(String userAccount,String userPass) throws Exception {
-        VerifyParam.verifyParam(userAccount,userPass);
+    public ApiResult registerService(String userAccount,String userPass) {
         sysUserMapper.insert(new SysUser().setAccount(userAccount).setPassword(MD5.generate(userPass)));
         return new ApiResult().success(ApiCode.SUCCESS);
     }
 
     @Override
-    public ApiResult loginService(@NotNull(Config.ACCOUNT_NOT_NULL) String userAccount, @NotNull(Config.PASSWORD_NOT_NULL) String password) throws Exception {
-        VerifyParam.verifyParam(userAccount,password);
+    public ApiResult loginService(String userAccount,String password) {
         return verifyLogin(userAccount,password);
     }
 
@@ -50,10 +48,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             throw new BaseException(ApiCode.NOT_USER);
         }
         return password;
-    }
-
-    @Override
-    public void asyncInsertLog() {
     }
 
     private ApiResult verifyLogin(String userAccount,String userPass){

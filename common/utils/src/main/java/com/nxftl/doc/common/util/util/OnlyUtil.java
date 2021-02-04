@@ -26,7 +26,7 @@ public class OnlyUtil {
      * @param tableName 表名
      * @param columnAndValue 字段名和value值
      */
-    private void onlyIsTrue(String tableName, HashMap<String,String> columnAndValue){
+    private void onlyIsTrue(String tableName, HashMap<StringBuilder,StringBuilder> columnAndValue){
         isOnly(onlyMapper.isOnly(tableName,columnAndValue));
     }
 
@@ -44,30 +44,30 @@ public class OnlyUtil {
      * @param columnAndValue 一定要是双数,如果是单数则抛出异常
      * @return
      */
-    private HashMap<String,String> encapsulationColumnAndValue(boolean isFirstPattern,String ... columnAndValue){
+    private HashMap<StringBuilder,StringBuilder> encapsulationColumnAndValue(boolean isFirstPattern,String ... columnAndValue){
         isQuantity(columnAndValue);
         return encapsulation(isFirstPattern,columnAndValue);
     }
 
-    private HashMap<String, String> encapsulation(boolean isFirstPattern, String[] columnAndValue) {
+    private HashMap<StringBuilder, StringBuilder> encapsulation(boolean isFirstPattern, String[] columnAndValue) {
         if(isFirstPattern)
             return firstPattern(columnAndValue);
 
         return secondPattern(columnAndValue);
     }
 
-    private HashMap<String, String> firstPattern(String[] columnAndValue) {
-        HashMap<String,String> resultMap = new HashMap<>();
+    private HashMap<StringBuilder, StringBuilder> firstPattern(String[] columnAndValue) {
+        HashMap<StringBuilder,StringBuilder> resultMap = new HashMap<>();
         for (int i = 0, let = columnAndValue.length; i < let; i+=2) {
-            resultMap.put(columnAndValue[i],columnAndValue[i+1]);
+            resultMap.put(new StringBuilder().append(columnAndValue[i]),new StringBuilder().append(columnAndValue[i+1]));
         }
         return resultMap;
     }
 
-    private HashMap<String, String> secondPattern(String[] columnAndValue) {
-        HashMap<String,String> resultMap = new HashMap<>();
+    private HashMap<StringBuilder, StringBuilder> secondPattern(String[] columnAndValue) {
+        HashMap<StringBuilder,StringBuilder> resultMap = new HashMap<>();
         for (int i = 0 ,let = (columnAndValue.length>>1); i < let; i++) {
-            resultMap.put(columnAndValue[i],columnAndValue[let+i]);
+            resultMap.put(new StringBuilder().append(columnAndValue[i]),new StringBuilder().append(columnAndValue[let+i]));
         }
         return resultMap;
     }
@@ -96,11 +96,11 @@ public class OnlyUtil {
     }
 
 
-    public void invokeIsOnly(String taleName,HashMap<String,String> columnAndValue){
+    public void invokeIsOnly(String taleName,HashMap<StringBuilder,StringBuilder> columnAndValue){
         onlyIsTrue(taleName,columnAndValue);
     }
 
-    public HashMap<String,String> invokeEncapsulationColumnAndValue(boolean isFirstPattern, String ... columnAndValue){
+    public HashMap<StringBuilder,StringBuilder> invokeEncapsulationColumnAndValue(boolean isFirstPattern, String ... columnAndValue){
         return encapsulationColumnAndValue(isFirstPattern,columnAndValue);
     }
 

@@ -27,35 +27,31 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictMapper, SysDict> impl
     private SysDictMapper sysDictMapper;
 
     @Override
-    public ApiResult addDictService(String dictName,String dictCode,String pCode) throws Exception {
+    public ApiResult addDictService(String dictName,String dictCode,String pCode){
         SysDict sysDict = new SysDict()
                 .setDictName(dictName)
                 .setDictCode(dictCode)
                 .setPCode(pCode);
-        VerifyParam.verifyParam(sysDict.getClass(),sysDict);
         sysDictMapper.insert(sysDict);
         return new ApiResult().success();
     }
 
     @Override
-    public ApiResult findDictByDictNameService(String dictName)throws Exception {
-        VerifyParam.verifyParam(dictName);
+    public ApiResult findDictByDictNameService(String dictName) {
         return new ApiResult().success(ApiCode.QUERY_SUCCESS,
                 sysDictMapper.selectOne(new LambdaQueryWrapper<SysDict>()
                         .eq(SysDict::getDictName,dictName)));
     }
 
     @Override
-    public ApiResult findDictByDictCodeService(String dictCode) throws Exception{
-        VerifyParam.verifyParam(dictCode);
+    public ApiResult findDictByDictCodeService(String dictCode){
         return new ApiResult().success(ApiCode.QUERY_SUCCESS,
                 sysDictMapper.selectOne(new LambdaQueryWrapper<SysDict>()
                         .eq(SysDict::getDictCode,dictCode)));
     }
 
     @Override
-    public ApiResult findDictAnyByPCodeService(String pCode) throws Exception{
-        VerifyParam.verifyParam(pCode);
+    public ApiResult findDictAnyByPCodeService(String pCode){
         return new ApiResult().success(ApiCode.QUERY_SUCCESS,
                 sysDictMapper.selectList(new LambdaQueryWrapper<SysDict>()
                         .eq(SysDict::getPCode,pCode)));

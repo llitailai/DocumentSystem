@@ -17,5 +17,11 @@
         # mapper层(自定义SQL)
             selectUserAccountByIdSql()
             
-    
-**更新时间 : 2021-01-28 08:42**
+## RegUtil 
+    1. 所有校验工具具体实现必须以verify作为前缀
+    2. @ValidAny 内部校验参数必须为RegUtil内部校验规则后缀
+        如 : public boolean qq() default false; //来源于ValidAny
+             private static Message void verifyQQ(...){} // RegUtil 
+           
+**更新时间 : 2021-01-28 08:42**<br/>
+**更新时间 : 2021-02-04 14:38**<br/>

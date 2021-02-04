@@ -19,5 +19,5 @@ public interface OnlyMapper  {
 
 
     @SelectProvider(type = OnlyProvider.class,method = "queryOnly")
-    Integer isOnly(String tableName, HashMap<String,String> columnAndValue);
+    Integer isOnly(String tableName, HashMap<StringBuilder,StringBuilder> columnAndValue);
 }

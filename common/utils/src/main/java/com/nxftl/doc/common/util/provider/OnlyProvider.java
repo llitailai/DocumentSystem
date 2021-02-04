@@ -1,9 +1,7 @@
 package com.nxftl.doc.common.util.provider;
 
-import com.nxftl.doc.common.util.annotation.NotNull;
 import com.nxftl.doc.common.util.util.BaseException;
 import com.nxftl.doc.common.util.util.StringUtils;
-import com.nxftl.doc.config.setting.Config;
 import org.apache.ibatis.jdbc.SQL;
 
 import java.util.HashMap;
@@ -18,25 +16,26 @@ import java.util.Map;
 public class OnlyProvider {
 
 
-    public String queryOnly(String tableName, HashMap<String,String> columnAndValue){
+    public String queryOnly(String tableName, HashMap<StringBuilder,StringBuilder> columnAndValue){
         verify(tableName,columnAndValue);
-        SQL sql = new SQL().SELECT("count(1)").FROM(tableName);
+        SQL sql = new SQL().SELECT("1").FROM(tableName);
         sql.WHERE(appendSql(columnAndValue));
         return sql.toString();
     }
 
-    private String appendSql(HashMap<String, String> columnAndValue) {
+    private String appendSql(HashMap<StringBuilder, StringBuilder> columnAndValue) {
         StringBuilder builder = new StringBuilder();
-        for (Map.Entry<String, String> column : columnAndValue.entrySet()) {
+        for (Map.Entry<StringBuilder, StringBuilder> column : columnAndValue.entrySet()) {
             if(StringUtils.isEmpty(column.getValue()))
                 continue;
-            builder.append(column.getKey()+"='"+column.getValue()+"',");
+            builder.append(column.getKey().append("='").append(column.getValue().append("',")));
         }
-        return builder.toString().substring(0,builder.length()-1);
+        final int len = builder.length();
+        return builder.replace(len-1,len,"\tlimit\t0,1").toString();
     }
 
 
-    private void verify(String tableName,HashMap<String,String> value){
+    private void verify(String tableName,HashMap<StringBuilder,StringBuilder> value){
         if(StringUtils.isEmpty(tableName) || StringUtils.isEmpty(value))
             throw new BaseException("NullPointerException");
     }

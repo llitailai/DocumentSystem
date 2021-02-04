@@ -18,11 +18,10 @@ import java.util.HashMap;
 public interface ISysUserService extends IService<SysUser> {
 
 
-    ApiResult registerService(String userAccount,String userPass) throws Exception;
+    ApiResult registerService(String userAccount,String userPass);
 
-    ApiResult loginService(String userAccount,String userPass) throws Exception;
+    ApiResult loginService(String userAccount,String userPass);
 
     String getPasswordById(Long userId);
 
-    void asyncInsertLog();
 }

@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.nxftl.doc.common.util.annotation.NotNull;
+import com.nxftl.doc.common.util.annotation.ValidAny;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,11 +34,11 @@ public class SysDict implements Serializable {
     private Long dictId;
 
     @ApiModelProperty(value = "字典项名称",required = true)
-    @NotNull(value = "字典项名称不能为空")
+    @ValidAny(exist = true,existError = "字典项名称不能为空")
     private String dictName;
 
     @ApiModelProperty(value = "字典项英文值",required = true)
-    @NotNull(value = "字典项英文值不能为空")
+    @ValidAny(exist = true,existError = "字典项英文值不能为空")
     private String dictCode;
 
     @ApiModelProperty(value = "字典项父code")

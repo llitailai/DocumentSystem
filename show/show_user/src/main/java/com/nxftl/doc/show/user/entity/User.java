@@ -31,15 +31,15 @@ public class User implements Serializable {
     private Integer userId;
 
     @ApiModelProperty(value = "用户电话号码")
-    @ValidAny(value = Config.TEL_NOT_QUALIFIED,tel = true)
+    @ValidAny(value = Config.TEL_NOT_QUALIFIED,tel = true,groupExist = true)
     private String tel;
 
     @ApiModelProperty(value = "邮箱")
-    @ValidAny(value = Config.EMAIL_NOT_QUALIFIED,email = true)
+    @ValidAny(value = Config.EMAIL_NOT_QUALIFIED,email = true,groupExist = true)
     private String email;
 
     @ApiModelProperty(value = "密码")
-    @ValidAny(value = Config.PASSWORD_NOT_QUALIFIED,password = true)
+    @ValidAny(value = Config.PASSWORD_NOT_QUALIFIED,password = true,exist = true)
     private String password;
 
 }
