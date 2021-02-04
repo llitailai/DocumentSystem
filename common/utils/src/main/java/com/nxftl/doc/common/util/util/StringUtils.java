@@ -31,6 +31,26 @@ public class StringUtils {
         return true;
     }
 
+
+    /**
+     * 判断方法名称是否没有多个单词组成
+     * 比如
+     *  email true , tel true , account true, password true
+     *  emailValid false, accountValid false
+     * @param name
+     * @return
+     */
+    private static synchronized boolean verifyNotUpperCase(String name) {
+        String newName = name.toLowerCase();
+        byte[] bytes = name.getBytes();
+        byte[] newNameBytes = newName.getBytes();
+        for(int i=0,let=bytes.length;i<let;i++){
+            if((int)bytes[i] != (int)newNameBytes[i])
+                return false;
+        }
+        return true;
+    }
+
     public static boolean isEmpty(Object obj){
         return !verifyIsNull(obj);
     }
@@ -48,4 +68,7 @@ public class StringUtils {
     public static boolean isNotEmpty(Object ... objs){
         return verifyIsNull(objs);
     }
+
+
+    public static boolean isNotHaveUpperCase(String name){return verifyNotUpperCase(name);}
 }

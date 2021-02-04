@@ -4,7 +4,9 @@ import com.nxftl.doc.common.util.api.ApiCode;
 import com.nxftl.doc.config.setting.Config;
 import com.nxftl.doc.config.setting.reg.Reg;
 import lombok.Data;
+import org.springframework.jmx.access.InvocationFailureException;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -48,7 +50,7 @@ public class RegUtil {
     /**
      * 模糊查找方法并执行
      * @param fuzzyMethodName 模糊方法名
-     * @param verifyValue 检验方法
+     * @param verifyValue 需检验参数
      */
     public static void invokeFuzzyInvokeMethod(String fuzzyMethodName,String verifyValue){
         fuzzyInvokeMethod(fuzzyMethodName,verifyValue);
@@ -56,64 +58,100 @@ public class RegUtil {
 
 
 
-    private static void verifyTel(String tel) {
+    private static Message verifyTel(String tel) {
         if(tel.matches(Reg.PHONE.getRegValue())){
-            throw new BaseException(ApiCode.INVALID_TEL);
+            return new Message().setApiCode(ApiCode.INVALID_TEL);
         }
+        return null;
     }
 
-    private static void verifyPassword(String password) {
+    private static Message verifyPassword(String password) {
         if(password.length() <= 8 && password.length() >= 30){
-            throw new BaseException(ApiCode.INVALID_PASSWORD);
+            return new Message().setApiCode(ApiCode.INVALID_PASSWORD);
         }
+        return null;
     }
 
 
 
-    private static void verifyEmail(String email) {
+    private static Message verifyEmail(String email) {
         if(!email.matches(Reg.EMAIL.getRegValue()) || email.length()>64){
-            throw new BaseException(ApiCode.INVALID_EMAIL);
+            return new Message().setApiCode(ApiCode.INVALID_PASSWORD);
         }
+        return null;
     }
 
 
+    /**
+     * 根据方法名获取命中方法
+     * @param fuzzyMethodName
+     * @param verifyValue
+     */
     private static void fuzzyInvokeMethod(String fuzzyMethodName,String verifyValue){
         Class<RegUtil> regUtilClass = RegUtil.class;
-        hitMethods(regUtilClass.getMethods(),fuzzyMethodName,verifyValue);
+        hitMethods(regUtilClass,fuzzyMethodName,verifyValue);
     }
 
 
-
-    private static void hitMethods(Method[] methods, String fuzzyMethodName,String verifyValue) {
-        for (Method method : methods) {
-            if(method.getName().toLowerCase().contains(fuzzyMethodName.toLowerCase())){
-                invoke(method,verifyValue);
-                break;
+    /**
+     * 命中方法具体实现.根据方法名字符串去看是否包含模糊方法,如果包含则执行,没有则抛出异常
+     * 这只是一阶段实现 二阶段会对命中方法进行优化
+     * TODO FIRST IMPL
+     * @param cls
+     * @param fuzzyMethodName
+     * @param verifyValue
+     */
+    private static void hitMethods(Class<RegUtil> cls, String fuzzyMethodName,String verifyValue) {
+        for (Method method : cls.getDeclaredMethods()) {
+            String selfMethodName = findMethod(method.getName());
+            if(selfMethodName != null && selfMethodName.toLowerCase().contains(fuzzyMethodName.toLowerCase())){
+                invoke(method,verifyValue,cls);
+                return;
             }
         }
         throw new BaseException(ApiCode.NOT_METHOD);
     }
 
-    private static void invoke(Method method,String verifyValue) {
+    private static String findMethod(String methodName) {
+        return find(methodName);
+    }
+
+    private static String find(String methodName) {
+        if(methodName.contains("verify")){
+            return methodName;
+        }
+        return null;
+    }
+
+
+
+    private static String isNotObject(String methodName) {
+        if(methodName == null || foreachObjectMethodJudgeThisMethodNameIsObjectMethod(methodName))
+            return null;
+        return methodName;
+    }
+
+    private static boolean foreachObjectMethodJudgeThisMethodNameIsObjectMethod(String methodName) {
+        for (Method declaredMethod : Object.class.getDeclaredMethods()) {
+            if(declaredMethod.getName().equals(methodName))
+                return true;
+        }
+        return false;
+    }
+
+    private static void invoke(Method method,String verifyValue,Class<RegUtil> cls) {
+        Message msg ;
         try {
-            method.invoke(new RegUtil(),verifyValue);
+            method.setAccessible(true);
+            msg = (Message) method.invoke(cls,verifyValue);
+            if(msg != null){
+                throw new BaseException(msg.getApiCode());
+            }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-    }
-
-    @Data
-    private class HitRate{
-
-        /**
-         * 命中次数
-         */
-        private Integer hitCount;
-
-
-        private Integer K;
     }
 
 

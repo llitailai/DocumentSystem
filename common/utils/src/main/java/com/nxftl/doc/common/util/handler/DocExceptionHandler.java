@@ -2,11 +2,14 @@ package com.nxftl.doc.common.util.handler;
 
 import com.nxftl.doc.common.util.api.ApiCode;
 import com.nxftl.doc.common.util.api.ApiResult;
+import com.nxftl.doc.common.util.http.HttpStatus;
 import com.nxftl.doc.common.util.util.BaseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.lang.reflect.InvocationTargetException;
 
 
 /**
@@ -46,5 +49,16 @@ public class DocExceptionHandler {
         e.printStackTrace();
         System.out.println(e.getClass().getName());
         return new ApiResult(ApiCode.ERROR);
+    }
+
+    @ExceptionHandler(value = InvocationTargetException.class)
+    @ResponseBody
+    public ApiResult invocationTargetExceptionHandler(InvocationTargetException e){
+        Throwable cause = e.getCause();
+        log.warn(cause.getMessage());
+        cause.printStackTrace();
+        System.out.println(e.getCause().getClass().getName());
+        return new ApiResult(HttpStatus.ACCEPTED,cause.getMessage());
+
     }
 }
