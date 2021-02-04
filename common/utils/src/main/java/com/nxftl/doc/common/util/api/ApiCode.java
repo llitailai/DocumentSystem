@@ -17,6 +17,7 @@ public enum ApiCode {
     NOT_ONLY(HttpStatus.ACCEPTED,"字段不唯一"),
     NOT_USER(HttpStatus.ACCEPTED,"没有该用户"),
     NOT_TOKEN(HttpStatus.NOT_TOKEN,"未携带Token"),
+    LOGIN_FAIL(HttpStatus.ERROR,Config.ACCOUNT_OR_PASSWORD_FAIL),
     INVALID_PASSWORD(HttpStatus.ACCEPTED, Config.PASSWORD_NOT_QUALIFIED),
     INVALID_EMAIL(HttpStatus.ACCEPTED,Config.EMAIL_NOT_QUALIFIED),
     INVALID_TEL(HttpStatus.ACCEPTED,Config.TEL_NOT_QUALIFIED),

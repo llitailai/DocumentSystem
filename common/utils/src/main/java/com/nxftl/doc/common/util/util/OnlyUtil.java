@@ -31,7 +31,7 @@ public class OnlyUtil {
     }
 
     private void isOnly(Integer only) {
-        if(only>0)
+        if(only != null)
             throw new BaseException(ApiCode.NOT_ONLY);
     }
 

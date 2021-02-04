@@ -1,8 +1,13 @@
 package com.nxftl.doc.show.user.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.nxftl.doc.common.util.api.ApiCode;
 import com.nxftl.doc.common.util.api.ApiResult;
+import com.nxftl.doc.common.util.util.BaseException;
+import com.nxftl.doc.common.util.util.MD5;
 import com.nxftl.doc.common.util.util.OnlyUtil;
+import com.nxftl.doc.common.util.util.StringUtils;
 import com.nxftl.doc.config.setting.Config;
 import com.nxftl.doc.show.info.entity.UserInfo;
 import com.nxftl.doc.show.info.mapper.UserInfoMapper;
@@ -16,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * <p>
@@ -40,10 +46,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public ApiResult registerUserService(User user) {
         distinct(user);
+        user.setPassword(MD5.generate(user.getPassword()));
         int result = userMapper.insert(user);
         iUserInfoService.addUserInfoAsyncService(new UserInfo().setUserId(user.getUserId()).setCreateTime(new Date()));
         return result>0?new ApiResult<>().success():new ApiResult<>().fail();
     }
+
+    @Override
+    public ApiResult loginService(String account, String password) {
+        User user = userMapper.selectOne(new LambdaQueryWrapper<User>()
+                .eq(User::getEmail, account)
+                .or()
+                .eq(User::getTel, account));
+        if(user == null || !MD5.verify(password,user.getPassword())) throw new BaseException(ApiCode.LOGIN_FAIL);
+        return encapsulationResult(user);
+    }
+
+    private ApiResult encapsulationResult(User user) {
+        HashMap<String,Object> resultMap = new HashMap<>();
+        resultMap.put("account",getResultValue(user));
+        return new ApiResult().success(ApiCode.LOGIN_SUCCESS,resultMap);
+    }
+
+    private String getResultValue(User user) {
+        return StringUtils.isEmpty(user.getEmail())?user.getTel():user.getEmail();
+    }
+
 
     /**
      * 判断是否重复,如果重复则不可

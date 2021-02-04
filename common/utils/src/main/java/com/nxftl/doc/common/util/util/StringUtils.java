@@ -55,6 +55,17 @@ public class StringUtils {
         return !verifyIsNull(obj);
     }
 
+    private static synchronized boolean isEmptyContainsNotNullStr(Object obj){
+        if(obj == null) return true;
+        if(obj instanceof String)
+            if(StringUtils.isEmpty(obj) || "null".equals(obj))
+                return true;
+        return false;
+    }
+
+    public static boolean isEmptyNotNullStr(Object obj){
+        return isEmptyContainsNotNullStr(obj);
+    }
 
     public static boolean isNotEmpty(Object obj){
         return verifyIsNull(obj);

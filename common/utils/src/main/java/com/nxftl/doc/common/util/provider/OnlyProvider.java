@@ -19,19 +19,19 @@ public class OnlyProvider {
     public String queryOnly(String tableName, HashMap<StringBuilder,StringBuilder> columnAndValue){
         verify(tableName,columnAndValue);
         SQL sql = new SQL().SELECT("1").FROM(tableName);
-        sql.WHERE(appendSql(columnAndValue));
+        sql.WHERE(appendSql(columnAndValue)).LIMIT(1);
         return sql.toString();
     }
 
     private String appendSql(HashMap<StringBuilder, StringBuilder> columnAndValue) {
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<StringBuilder, StringBuilder> column : columnAndValue.entrySet()) {
-            if(StringUtils.isEmpty(column.getValue()))
+            if(StringUtils.isEmptyNotNullStr(column.getValue().toString()))
                 continue;
-            builder.append(column.getKey().append("='").append(column.getValue().append("',")));
+            builder.append(column.getKey().append("='").append(column.getValue().append("'\ror\r")));
         }
-        final int len = builder.length();
-        return builder.replace(len-1,len,"\tlimit\t0,1").toString();
+        builder.trimToSize();
+        return builder.substring(0,builder.lastIndexOf("or"));
     }
 
 

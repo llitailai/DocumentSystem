@@ -19,4 +19,13 @@ public interface IUserService extends IService<User> {
      * @param user
      */
     ApiResult registerUserService(User user);
+
+
+    /**
+     * 登录服务
+     * @param account 账号
+     * @param password 密码1
+     * @return
+     */
+    ApiResult loginService(String account,String password);
 }

@@ -54,14 +54,14 @@ public class RegUtil {
 
 
     private static Message verifyTel(String tel) {
-        if(tel.matches(Reg.PHONE.getRegValue())){
+        if(!tel.matches(Reg.PHONE.getRegValue())){
             return new Message().setApiCode(ApiCode.INVALID_TEL);
         }
         return null;
     }
 
     private static Message verifyPassword(String password) {
-        if(password.length() <= 8 || password.length() >= 30){
+        if(password.length() < 8 || password.length() >= 30){
             return new Message().setApiCode(ApiCode.INVALID_PASSWORD);
         }
         return null;

@@ -36,4 +36,10 @@ public class UserController {
     public ApiResult registerUser(@ValidAny(isEntity = true)User user){
         return userService.registerUserService(user);
     }
+
+    @PostMapping("/login")
+    @ApiOperation(value = "用户登录")
+    public ApiResult login(@ValidAny(exist = true,existError = "用户密码不能为空") String username,@ValidAny(exist = true,existError = "用户密码不能为空",password = true) String password){
+        return userService.loginService(username,password);
+    }
 }

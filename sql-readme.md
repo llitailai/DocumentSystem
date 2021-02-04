@@ -100,7 +100,8 @@ create table sys_role_user(
 create table user(
     user_id smallint primary key auto_increment,
     tel char(11) default '' comment '用户电话号码',
-    email char(32) default '' comment '邮箱'
+    email char(32) default '' comment '邮箱',
+    password varchar(255) comment '密码'
 ) comment '用户表';
 
 create table user_info(
