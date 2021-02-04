@@ -16,6 +16,7 @@
         Param cls : 需校验对象字节码对象
         Param o : 需校验对象实体
 
+    2.  反射执行方法时,方法产出的任何异常都会被InvocationTargetException捕获
 
     模块分布
         原 common模块下没有子模块,common作为整体公共方法,包含校验不符合单一职责原则的特性
@@ -85,6 +86,8 @@ public class VerifyParam {
         会出现注入错误
         @Resource 查询规则,先根据变量名找类名,变量名找不到才会去通过类名寻找
 
+
+        
     IDEA 2020.3 bug
     1. 代码拉取不到最新版本,拉取下来可能会拉取一些不属于你的东西,发生原因未知,可能时git提交代码端idea版本为2019.3
 
