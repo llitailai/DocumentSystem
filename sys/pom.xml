@@ -8,9 +8,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>sys</artifactId>
     <packaging>pom</packaging>
+    <artifactId>sys</artifactId>
+
+
     <modules>
         <module>user</module>
         <module>log</module>
