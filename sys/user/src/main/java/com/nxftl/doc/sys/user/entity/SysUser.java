@@ -8,10 +8,7 @@ import com.nxftl.doc.common.util.annotation.NotNull;
 import com.nxftl.doc.common.util.annotation.ValidAny;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
@@ -29,6 +26,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 @ApiModel("后台用户")
 @Accessors(chain = true)
+@Builder
 public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 1L;

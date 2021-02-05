@@ -32,8 +32,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public ApiResult registerService(String userAccount,String userPass) {
-        sysUserMapper.insert(new SysUser().setAccount(userAccount).setPassword(MD5.generate(userPass)));
-        return new ApiResult().success(ApiCode.SUCCESS);
+        sysUserMapper.insert(SysUser.builder().account(userAccount).password(MD5.generate(userPass)).build());
+        return result();
     }
 
     @Override
@@ -61,7 +61,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if(curUser == null || curUser.getDelFlag() || curUser.getUserStatus()  ){
             throw new BaseException(HttpStatus.ACCEPTED,Config.ACCOUNT_OR_PASSWORD_FAIL);
         }
-
         return generateToken(userPass,curUser.getPassword(),curUser.getUserId());
     }
 
@@ -78,5 +77,10 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if(!MD5.verify(password,md5)){
             throw new BaseException(Config.ACCOUNT_OR_PASSWORD_FAIL);
         }
+    }
+
+
+    private ApiResult result(){
+        return new ApiResult().success(ApiCode.SUCCESS);
     }
 }
