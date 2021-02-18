@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nxftl.doc.common.util.api.ApiCode;
 import com.nxftl.doc.common.util.api.ApiResult;
-import com.nxftl.doc.common.util.util.BaseException;
-import com.nxftl.doc.common.util.util.MD5;
-import com.nxftl.doc.common.util.util.OnlyUtil;
-import com.nxftl.doc.common.util.util.StringUtils;
+import com.nxftl.doc.common.util.util.*;
 import com.nxftl.doc.config.setting.Config;
 import com.nxftl.doc.show.info.entity.UserInfo;
 import com.nxftl.doc.show.info.mapper.UserInfoMapper;
@@ -65,6 +62,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private ApiResult encapsulationResult(User user) {
         HashMap<String,Object> resultMap = new HashMap<>();
         resultMap.put("account",getResultValue(user));
+        resultMap.put("token", Token.createToken(user.getUserId().longValue(),user.getPassword()));
         return new ApiResult().success(ApiCode.LOGIN_SUCCESS,resultMap);
     }
 
@@ -74,7 +72,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
 
     /**
-     * 判断是否重复,如果重复则不可
+     * 判断是否重复,如果重复则不可注册
      * @param user
      */
     private void distinct(User user) {
