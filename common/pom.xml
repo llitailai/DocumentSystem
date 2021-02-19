@@ -124,5 +124,16 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
+        <!-- security 安全配置-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+        </dependency>
     </dependencies>
 </project>
