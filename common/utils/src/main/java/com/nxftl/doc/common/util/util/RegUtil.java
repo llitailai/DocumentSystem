@@ -1,6 +1,7 @@
 package com.nxftl.doc.common.util.util;
 
 import com.nxftl.doc.common.util.api.ApiCode;
+import com.nxftl.doc.config.setting.Config;
 import com.nxftl.doc.config.setting.reg.Reg;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -111,8 +112,15 @@ public class RegUtil {
         return find(methodName);
     }
 
+
+    private  static String[] find(Method [] method){
+//        return findImpl(method);
+        return null;
+    }
+
+
     private static String find(String methodName) {
-        if(methodName.contains("verify")){
+        if(KMP.kmp(methodName, Config.VERIFY)>=0){
             return methodName;
         }
         return null;

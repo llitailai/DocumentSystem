@@ -55,4 +55,6 @@ public interface Config {
     String TEL_NOT_QUALIFIED = "电话格式不正确" ;
 
     String NOT_METHOD = "未通过模糊查询找到方法";
+
+    String VERIFY = "verify";
 }
