@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.nxftl.doc.config.setting.Config;
-import org.springframework.util.DigestUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -15,6 +15,7 @@ import java.util.Date;
  * @date 2021/1/26 16:43
  * @discription
  */
+@Slf4j
 public class Token {
 
 
@@ -27,12 +28,11 @@ public class Token {
     public static String createToken(Long userId,String password){
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE,Config.TIME_OUT_DAY);
-        String token = JWT.create()
+        return JWT.create()
                 .withClaim(Config.USER_ID, userId)
                 .withClaim(Config.KEY, password)
                 .withExpiresAt(calendar.getTime())
                 .sign(Algorithm.HMAC256(Config.SECRET_KEY));
-        return token;
     }
 
 
